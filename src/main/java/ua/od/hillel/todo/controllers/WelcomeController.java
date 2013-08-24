@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Base controller
  */
 @Controller
-@RequestMapping("/")
 public class WelcomeController {
 
     /**
