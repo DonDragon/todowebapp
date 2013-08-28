@@ -21,7 +21,9 @@
     <td>
          ${fn:length(l.entries)}
     </td>
-
+    <td>
+        <a href="/lists/delete/${l.id}" class="btn btn-primary"> delete </a>
+    </td>
 
    </tr>
    </c:forEach>

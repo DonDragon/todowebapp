@@ -29,4 +29,8 @@ public class TODODao {
     public void create(Object o) {
         entityManager.persist(o);
     }
+
+    public void delete(Long id) {
+        entityManager.remove( load(id) );
+    }
 }

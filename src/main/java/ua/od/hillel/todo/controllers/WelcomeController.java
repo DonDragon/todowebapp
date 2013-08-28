@@ -30,25 +30,29 @@ public class WelcomeController {
      */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String list(ModelMap model) {
-
         model.addAttribute("lists", dao.findTODOLists());
 		return "index";
-
 	}
+
+    /**
+     * Delete
+     */
+    @RequestMapping(value = "/lists/delete/{id}", method = RequestMethod.GET)
+    public String delete(@PathVariable Long id, ModelMap model) {
+
+        dao.delete(id);
+        return "redirect:/";
+    }
 
     /**
      * Show list
      */
     @RequestMapping(value = "/lists/{id}", method = RequestMethod.GET)
     public String show(@PathVariable Long id, ModelMap model) {
-
-
         model.addAttribute("list", dao.load(id));
         return "lists/show";
 
     }
-
-
 
     /**
      * Create List
