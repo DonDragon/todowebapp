@@ -11,6 +11,8 @@
  
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+
+        <property name="viewClass" value="ua.od.hillel.todo.utils.JstlView" />
 		<property name="prefix">
 			<value>/WEB-INF/pages/</value>
 		</property>
