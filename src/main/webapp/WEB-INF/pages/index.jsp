@@ -3,10 +3,14 @@
 
 		<h1>Your TODO lists</h1>
 
-
-    <p>
-        <a href="/lists/create" class="btn btn-primary">+ Add new TODO list</a>
-    </p>
+  <tr>
+   <td>
+       <a href="/lists/create" class="btn btn-primary">+ Add new TODO list</a>
+   </td>
+   <td>
+       <a href="/lists/sort" class="btn btn-info">Sort</a>
+   </td>
+  </tr>
 
   <table class="table table-striped table-bordered table-hover ">
 
