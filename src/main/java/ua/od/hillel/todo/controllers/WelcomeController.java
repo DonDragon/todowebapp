@@ -35,6 +35,15 @@ public class WelcomeController {
 	}
 
     /**
+     * Sort lists
+     */
+    @RequestMapping(value = "/lists/sort", method = RequestMethod.GET)
+    public String sort(ModelMap model) {
+        model.addAttribute("lists", dao.sortTODOLists());
+        return "index";
+    }
+
+    /**
      * Delete
      */
     @RequestMapping(value = "/lists/delete/{id}", method = RequestMethod.GET)
