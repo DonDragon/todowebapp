@@ -33,4 +33,9 @@ public class TODODao {
     public void delete(Long id) {
         entityManager.remove( load(id) );
     }
+
+    public List<TODOList> sortTODOLists() {
+        return entityManager.createQuery(
+                "SELECT l FROM TODOList l ORDER BY l.id DESC").getResultList();
+    }
 }
