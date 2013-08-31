@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ua.od.hillel.todo.dao.TODODao;
 import ua.od.hillel.todo.entities.TODOList;
+import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 
@@ -17,6 +18,9 @@ import javax.persistence.EntityManager;
 @Controller
 @RequestMapping("/")
 public class WelcomeController {
+
+
+    private static final Logger logger = Logger.getLogger(WelcomeController.class);
 
     /**
      * Dao
@@ -30,6 +34,7 @@ public class WelcomeController {
      */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String list(ModelMap model) {
+        logger.debug(model);
         model.addAttribute("lists", dao.findTODOLists());
 		return "index";
 	}
