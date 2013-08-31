@@ -14,6 +14,8 @@ import java.util.List;
 @Transactional
 public class TODODao {
 
+    private String order = "DESC";
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -35,7 +37,19 @@ public class TODODao {
     }
 
     public List<TODOList> sortTODOLists() {
+
         return entityManager.createQuery(
                 "SELECT l FROM TODOList l ORDER BY l.id DESC").getResultList();
+    }
+
+    public List<TODOList> sortTODOLists(String param) {
+
+        if (order.equals("DESC"))
+            order = "ASC";
+        else
+            order = "DESC";
+
+        return entityManager.createQuery(
+                "SELECT l FROM TODOList l ORDER BY l." + param + " " +order).getResultList();
     }
 }

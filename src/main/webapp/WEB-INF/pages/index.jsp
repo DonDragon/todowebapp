@@ -8,27 +8,34 @@
        <a href="/lists/create" class="btn btn-primary">+ Add new TODO list</a>
    </td>
    <td>
-       <a href="/lists/sort" class="btn btn-info">Sort</a>
+       <a href="/lists/sort/" class="btn btn-info">Sort</a>
    </td>
   </tr>
 
+  <div style="padding: 50px"/>
+
   <table class="table table-striped table-bordered table-hover ">
 
- <c:forEach var="l" items="${lists}">
-   <tr style="cursor:pointer" onclick="window.location='/lists/${l.id}'">
-    <td>
-         ${l.title}  ${l.id}
+  <tr align="center">
+        <th style="cursor:pointer" onclick="window.location='/lists/sort/title'">Title</th>
+        <th style="cursor:pointer" onclick="window.location='/lists/sort/description'">Description</th>
+        <th>Entry</th>
+  </tr>
+  <c:forEach var="l" items="${lists}">
+   <tr style="cursor:pointer;" onclick="window.location='/lists/${l.id}'">
+    <td style="vertical-align:middle" width="25%">
+         ${l.title}
     </td>
-    <td>
+    <td style="vertical-align:middle">
         ${l.description}
-    </td>
-    <td>
+    </td style="vertical-align:middle">
+    <td style="vertical-align:middle" align="center" width="15%">
          ${fn:length(l.entries)}
     </td>
-    <td>
+    <td align="center" width="5%">
         <a href="/lists/delete/${l.id}" class="btn btn-primary"> delete </a>
     </td>
 
    </tr>
    </c:forEach>
-      </table>
+   </table>
