@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name="TODOList")
-public class TODOList {
+public class TODOList implements Comparable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -52,5 +52,21 @@ public class TODOList {
 
     public void setEntries(List<TODOEntry> entries) {
         this.entries = entries;
+    }
+
+    public Integer getEntriesCount() {
+        return getEntries().size();
+    }
+
+    @Override
+    public int compareTo(Object obj) {
+
+        TODOList tmp = (TODOList) obj;
+
+        if (this.getEntriesCount() < tmp.getEntriesCount() )
+            return -1;
+        else if (this.getEntriesCount() > tmp.getEntriesCount())
+            return 1;
+        return 0;
     }
 }
