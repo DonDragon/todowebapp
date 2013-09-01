@@ -7,9 +7,6 @@
    <td>
        <a href="/lists/create" class="btn btn-primary">+ Add new TODO list</a>
    </td>
-   <td>
-       <a href="/lists/sort/" class="btn btn-info">Sort</a>
-   </td>
   </tr>
 
   <div style="padding: 50px"/>
