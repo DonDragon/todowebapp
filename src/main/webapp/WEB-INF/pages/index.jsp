@@ -16,9 +16,9 @@
   <table class="table table-striped table-bordered table-hover ">
 
   <tr align="center">
-        <th style="cursor:pointer" onclick="window.location='/lists/sort/title'">Title</th>
-        <th style="cursor:pointer" onclick="window.location='/lists/sort/description'">Description</th>
-        <th style="cursor:pointer" onclick="window.location='/lists/sort/entry'">Entry</th>
+        <th style="cursor:pointer" onclick="window.location='/lists/sort?param=title'">Title</th>
+        <th style="cursor:pointer" onclick="window.location='/lists/sort?param=description'">Description</th>
+        <th style="cursor:pointer" onclick="window.location='/lists/sort?param=entry'">Entry</th>
   </tr>
   <c:forEach var="l" items="${lists}">
    <tr style="cursor:pointer;" onclick="window.location='/lists/${l.id}'">
