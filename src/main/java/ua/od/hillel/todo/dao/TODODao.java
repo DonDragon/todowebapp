@@ -8,6 +8,9 @@ import ua.od.hillel.todo.entities.TODOList;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -44,12 +47,31 @@ public class TODODao {
 
     public List<TODOList> sortTODOLists(String param) {
 
-        if (order.equals("DESC"))
-            order = "ASC";
-        else
-            order = "DESC";
+        List<TODOList> resultList;
 
-        return entityManager.createQuery(
-                "SELECT l FROM TODOList l ORDER BY l." + param + " " +order).getResultList();
+        if (param.equals("entry")) {
+            resultList = entityManager.createQuery("SELECT l FROM TODOList l").getResultList();
+
+            if (order.equals("DESC")) {
+                order = "ASC";
+                Collections.sort(resultList);
+            }
+            else {
+                order = "DESC";
+                Collections.sort(resultList);
+                Collections.reverse(resultList);
+            }
+
+            return resultList;
+        }
+        else {
+            if (order.equals("DESC"))
+                order = "ASC";
+            else
+                order = "DESC";
+
+            return entityManager.createQuery(
+                    "SELECT l FROM TODOList l ORDER BY l." + param + " " +order).getResultList();
+        }
     }
 }
