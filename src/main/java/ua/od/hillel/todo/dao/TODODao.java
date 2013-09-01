@@ -8,11 +8,16 @@ import ua.od.hillel.todo.entities.TODOList;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
 @Transactional
 public class TODODao {
+
+    private String order = "DESC";
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -22,8 +27,12 @@ public class TODODao {
                 "SELECT l FROM TODOList l").getResultList();
     }
 
-    public TODOList load(Long id) {
-       return entityManager.find(TODOList.class, id);
+    public <T> T load(Class<T> clazz, Long id) {
+       return entityManager.find(clazz, id);
+    }
+
+    public void update(Object o) {
+        entityManager.merge(o);
     }
 
     public void create(Object o) {
@@ -31,6 +40,42 @@ public class TODODao {
     }
 
     public void delete(Long id) {
-        entityManager.remove( load(id) );
+        entityManager.remove( load(TODOList.class, id) );
+    }
+
+    public List<TODOList> sortTODOLists() {
+
+        return entityManager.createQuery(
+                "SELECT l FROM TODOList l ORDER BY l.id DESC").getResultList();
+    }
+
+    public List<TODOList> sortTODOLists(String param) {
+
+        List<TODOList> resultList;
+
+        if (param.equals("entry")) {
+            resultList = entityManager.createQuery("SELECT l FROM TODOList l").getResultList();
+
+            if (order.equals("DESC")) {
+                order = "ASC";
+                Collections.sort(resultList);
+            }
+            else {
+                order = "DESC";
+                Collections.sort(resultList);
+                Collections.reverse(resultList);
+            }
+
+            return resultList;
+        }
+        else {
+            if (order.equals("DESC"))
+                order = "ASC";
+            else
+                order = "DESC";
+
+            return entityManager.createQuery(
+                    "SELECT l FROM TODOList l ORDER BY l." + param + " " +order).getResultList();
+        }
     }
 }

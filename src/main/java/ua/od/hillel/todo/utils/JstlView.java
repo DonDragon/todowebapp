@@ -13,6 +13,7 @@ public class JstlView extends InternalResourceView {
     @Override
     protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        response.setContentType("text/html;charset=UTF-8");
         // Determine the path for the request dispatcher.
         String dispatcherPath = prepareForRendering(request, response);
 

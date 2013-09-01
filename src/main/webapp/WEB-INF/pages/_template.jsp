@@ -3,7 +3,7 @@
 
 <html>
 <head>
-          <link rel="stylesheet" href="http://bootswatch.com/united/bootstrap.min.css">
+          <link rel="stylesheet" href="http://bootswatch.com/spacelab/bootstrap.min.css">
 </head>
 
     <body style=" padding-top: 50px;">
@@ -29,11 +29,15 @@
     </div>
 
 	<div class="container">
-	<jsp:include page="${partial}" />
-
+        <jsp:include page="${partial}" />
+        <div height="500px">
+            <hr>
+            <footer>
+                    <p>&copy; Hillel 2013</p>
+            </footer>
+        </div>
 	</div>
 </div>
-
 </body>
 </html>
 
