@@ -16,6 +16,9 @@ public class TODOEntry {
     @Column
     private Integer position;
 
+    @Column
+    private Boolean isDone = false;
+
     @ManyToOne
     @JoinColumn(name = "todolist_id")
     private TODOList list;
@@ -51,5 +54,13 @@ public class TODOEntry {
 
     public void setList(TODOList list) {
         this.list = list;
+    }
+
+    public Boolean getDone() {
+        return isDone;
+    }
+
+    public void setDone(Boolean done) {
+        isDone = done;
     }
 }

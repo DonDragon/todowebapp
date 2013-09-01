@@ -65,12 +65,20 @@ public class TODOListController {
      */
     @RequestMapping(value = "/lists/{id}", method = RequestMethod.GET)
     public ModelAndView show(@PathVariable Long id, ModelMap model) {
-        TODOList list = dao.load(id);
+        TODOList list = dao.load(TODOList.class, id);
         model.addAttribute("list", list);
 
         TODOEntry entry = new TODOEntry();
         entry.setList(list);
         return new ModelAndView("lists/show", "command", entry);
+    }
+
+    @RequestMapping(value = "/entries/{id}/toggle", method = RequestMethod.GET)
+    public String toggleEntry(@PathVariable Long id) {
+         TODOEntry entry = dao.load(TODOEntry.class, id);
+         entry.setDone( !entry.getDone() );
+         dao.update(entry);
+         return "redirect:/lists/" + entry.getList().getId();
     }
 
     /**
@@ -82,6 +90,8 @@ public class TODOListController {
         dao.create(todoList);
         return "redirect:/";
     }
+
+
     @RequestMapping("/lists/create")
     public ModelAndView showForm() {
         return new ModelAndView("list", "command", new TODOList());

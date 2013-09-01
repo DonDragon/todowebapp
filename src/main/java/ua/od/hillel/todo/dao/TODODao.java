@@ -27,8 +27,12 @@ public class TODODao {
                 "SELECT l FROM TODOList l").getResultList();
     }
 
-    public TODOList load(Long id) {
-       return entityManager.find(TODOList.class, id);
+    public <T> T load(Class<T> clazz, Long id) {
+       return entityManager.find(clazz, id);
+    }
+
+    public void update(Object o) {
+        entityManager.merge(o);
     }
 
     public void create(Object o) {
@@ -36,7 +40,7 @@ public class TODODao {
     }
 
     public void delete(Long id) {
-        entityManager.remove( load(id) );
+        entityManager.remove( load(TODOList.class, id) );
     }
 
     public List<TODOList> sortTODOLists() {
