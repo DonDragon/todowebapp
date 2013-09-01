@@ -12,6 +12,7 @@ import ua.od.hillel.todo.dao.TODODao;
 import ua.od.hillel.todo.entities.TODOEntry;
 import ua.od.hillel.todo.entities.TODOList;
 import org.springframework.web.servlet.ModelAndView;
+import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 
@@ -21,6 +22,9 @@ import javax.persistence.EntityManager;
 @Controller
 @RequestMapping("/")
 public class TODOListController {
+
+
+    private static final Logger logger = Logger.getLogger(TODOListController.class);
 
     /**
      * Dao
@@ -33,6 +37,7 @@ public class TODOListController {
      */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String list(ModelMap model) {
+        logger.debug(model);
         model.addAttribute("lists", dao.findTODOLists());
 		return "index";
 	}
