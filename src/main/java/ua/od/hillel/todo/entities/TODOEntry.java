@@ -21,4 +21,35 @@ public class TODOEntry {
     private TODOList list;
 
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public TODOList getList() {
+        return list;
+    }
+
+    public void setList(TODOList list) {
+        this.list = list;
+    }
 }

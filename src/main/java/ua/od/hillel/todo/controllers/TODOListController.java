@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ua.od.hillel.todo.dao.TODODao;
+import ua.od.hillel.todo.entities.TODOEntry;
 import ua.od.hillel.todo.entities.TODOList;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,7 +20,7 @@ import javax.persistence.EntityManager;
  */
 @Controller
 @RequestMapping("/")
-public class WelcomeController {
+public class TODOListController {
 
     /**
      * Dao
@@ -58,10 +59,13 @@ public class WelcomeController {
      * Show list
      */
     @RequestMapping(value = "/lists/{id}", method = RequestMethod.GET)
-    public String show(@PathVariable Long id, ModelMap model) {
-        model.addAttribute("list", dao.load(id));
-        return "lists/show";
+    public ModelAndView show(@PathVariable Long id, ModelMap model) {
+        TODOList list = dao.load(id);
+        model.addAttribute("list", list);
 
+        TODOEntry entry = new TODOEntry();
+        entry.setList(list);
+        return new ModelAndView("lists/show", "command", entry);
     }
 
     /**
@@ -76,6 +80,13 @@ public class WelcomeController {
     @RequestMapping("/lists/create")
     public ModelAndView showForm() {
         return new ModelAndView("list", "command", new TODOList());
+    }
+
+
+    @RequestMapping(value="/entries/new", method = RequestMethod.POST)
+    public String newEntry(@ModelAttribute("entry") TODOEntry entry) {
+        dao.create(entry);
+        return "redirect:/lists/" + entry.getList().getId();
     }
 
     /**
