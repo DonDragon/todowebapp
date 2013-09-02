@@ -43,20 +43,14 @@ public class TODOListController {
 	}
 
     /**
-     * Sort lists
-     */
-    @RequestMapping(value = "/lists/sort/", method = RequestMethod.GET)
-    public String sort(ModelMap model) {
-        model.addAttribute("lists", dao.sortTODOLists());
-        return "index";
-    }
-
-    /**
      * Delete
      */
-    @RequestMapping(value = "/lists/delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable Long id, ModelMap model) {
-        dao.delete(id);
+    @RequestMapping(value = "/lists/delete", method = RequestMethod.GET)
+    public String delete() {
+        for (TODOList list : dao.findTODOLists()) {
+            if (list.getChecked())
+                dao.delete(list.getId());
+        }
         return "redirect:/";
     }
 
@@ -73,12 +67,21 @@ public class TODOListController {
         return new ModelAndView("lists/show", "command", entry);
     }
 
-    @RequestMapping(value = "/entries/{id}/toggle", method = RequestMethod.GET)
-    public String toggleEntry(@PathVariable Long id) {
-         TODOEntry entry = dao.load(TODOEntry.class, id);
-         entry.setDone( !entry.getDone() );
-         dao.update(entry);
-         return "redirect:/lists/" + entry.getList().getId();
+    @RequestMapping(value = "/{entity}/{id}/toggle", method = RequestMethod.GET)
+    public String toggleEntry(@PathVariable String entity, @PathVariable Long id) {
+        if (entity.equals("entries")) {
+            TODOEntry entry = dao.load(TODOEntry.class, id);
+            entry.setDone( !entry.getDone() );
+            dao.update(entry);
+            return "redirect:/lists/" + entry.getList().getId();
+        }
+        if (entity.equals("lists")) {
+            TODOList list = dao.load(TODOList.class, id) ;
+            list.setChecked(!list.getChecked());
+            dao.update(list);
+            return "redirect:/";
+        } else
+            return "404";
     }
 
     /**
