@@ -67,9 +67,6 @@ public class TODOListController {
     @RequestMapping(value = "/lists/update", method = RequestMethod.POST)
     public String update(@ModelAttribute("list") TODOList todoList, BindingResult result) {
 
-        System.out.println("-------------------------------------------");
-        System.out.println(todoList.getId());
-        System.out.println("-------------------------------------------");
         dao.update(todoList);
         return "redirect:/";
     }
