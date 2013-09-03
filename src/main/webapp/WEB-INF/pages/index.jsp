@@ -42,6 +42,9 @@
     <td style="cursor:pointer; vertical-align:middle" onclick="window.location='/lists/${l.id}'" align="center" width="10%">
          ${fn:length(l.entries)}
     </td>
+    <td width="5%">
+         <a href="/lists/delete" class="btn btn-warning"> edit </a>
+    </td>
    </tr>
    </c:forEach>
    </table>

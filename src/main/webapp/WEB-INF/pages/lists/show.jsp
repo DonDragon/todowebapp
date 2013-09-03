@@ -1,22 +1,27 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <h1>${list.title}</h1>
-             <ul>
-              <c:forEach var="e" items="${list.entries}">
+              <table style="width: 50%;" "table table-striped table-bordered table-hover ">
+                  <c:forEach var="e" items="${list.entries}">
+                    <tr>
+                        <td>
+                            <input onclick="window.location='/entries/${e.id}/toggle'" type="checkbox"
+                                   style="width:25px; height:25px; vertical-align: middle"
+                                 <c:if test="${e.done}">
+                                     checked
+                                 </c:if>
+                             />
 
-                <li>
-                    <input onclick="window.location='/entries/${e.id}/toggle'" type="checkbox" style="width:25px; height:25px"
-                         <c:if test="${e.done}">
-                             checked
-                         </c:if>
-                     />
-
-                      ${e.content}
-                </li>
-
-                 </c:forEach>
+                        </td>
+                        <td style="width: 80%">
+                              ${e.content}
+                        </td>
+                        <td>
+                             <a href="/entry/delete?list_id=${list.id}&entry_id=${e.id}" class="btn btn-danger"> delete </a>
+                        </td>
+                     </tr>
+                  </c:forEach>
               </table>
-             </ul>
 
 <h2>TODO</h2>
 <form method="POST" action="/entries/new">

@@ -44,6 +44,10 @@ public class TODODao {
         entityManager.remove( load(TODOList.class, id) );
     }
 
+    public void deleteEntry(Long id) {
+        entityManager.remove( load(TODOEntry.class, id) );
+    }
+
     public List<TODOList> sortTODOLists(String param) {
 
         List<TODOList> resultList;

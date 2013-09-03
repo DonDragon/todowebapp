@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import ua.od.hillel.todo.dao.TODODao;
 import ua.od.hillel.todo.entities.TODOEntry;
 import ua.od.hillel.todo.entities.TODOList;
@@ -53,6 +50,15 @@ public class TODOListController {
                 dao.delete(list.getId());
         }
         return "redirect:/";
+    }
+
+    @RequestMapping(value = "/entry/delete", method = RequestMethod.GET)
+    public String deleteEntry(@RequestParam("list_id") Long listId,
+                              @RequestParam("entry_id") Long entryId) {
+
+        dao.deleteEntry(entryId);
+
+        return "redirect:/lists/" + listId;
     }
 
     /**

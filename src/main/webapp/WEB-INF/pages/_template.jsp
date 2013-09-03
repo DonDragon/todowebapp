@@ -30,7 +30,7 @@
 
 	<div class="container">
         <jsp:include page="${partial}" />
-        <div height="500px">
+        <div>
             <hr>
             <footer>
                     <p>&copy; Hillel 2013</p>
