@@ -15,7 +15,7 @@
   <table class="table table-hover">
 
   <tr align="center" class="danger">
-        <th></th>
+        <th style="cursor:pointer" onclick="window.location='/lists/selectall'">#</th>
         <th style="cursor:pointer" onclick="window.location='/lists/sort?param=title'">Title</th>
         <th style="cursor:pointer" onclick="window.location='/lists/sort?param=description'">Description</th>
         <th style="cursor:pointer" onclick="window.location='/lists/sort?param=entry'">Entry</th>

@@ -139,5 +139,37 @@ public class TODOListController {
         return "redirect:/";
     }
 
+    /**
+     * Toggle all lists
+     */
+    @RequestMapping(value = "/lists/selectall", method = RequestMethod.GET)
+    public String toggleAllLists() {
+        if (allListsChecked()) {
+            checkLists(false);
+        } else {
+            checkLists(true);
+        }
+       return "redirect:/";
+    }
+
+    private boolean allListsChecked() {
+        boolean checked = true;
+
+        for (TODOList list : dao.findTODOLists()) {
+            if (!list.getChecked()) {
+                checked = false;
+                break;
+            }
+        }
+        return checked;
+    }
+
+    private void checkLists(Boolean b) {
+        for (TODOList list : dao.findTODOLists()) {
+            list.setChecked(b);
+            dao.update(list);
+        }
+
+    }
 
 }
