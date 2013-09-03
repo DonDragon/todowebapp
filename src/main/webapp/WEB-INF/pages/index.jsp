@@ -3,22 +3,18 @@
 
 		<h1>Your TODO lists</h1>
 
-
-
-  <tr>
-   <td>
-       <a href="/lists/create" class="btn btn-primary">+ Add new TODO list</a>
-   </td>
-    <td>
-           <a href="/lists/delete" class="btn btn-danger"> delete </a>
-       </td>
-  </tr>
+ <table>
+    <tr>
+        <td><a href="/lists/create" class="btn btn-success">+ Add new TODO list</a></button></td>
+        <td><a href="/lists/delete" class="btn btn-danger"> Delete </a></button></td>
+    </tr>
+ </table>
 
   <div style="padding: 50px"/>
 
-  <table class="table table-striped table-bordered table-hover ">
+  <table class="table table-hover">
 
-  <tr align="center">
+  <tr align="center" class="danger">
         <th></th>
         <th style="cursor:pointer" onclick="window.location='/lists/sort?param=title'">Title</th>
         <th style="cursor:pointer" onclick="window.location='/lists/sort?param=description'">Description</th>

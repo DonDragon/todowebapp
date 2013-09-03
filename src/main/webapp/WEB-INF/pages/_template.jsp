@@ -3,7 +3,7 @@
 
 <html>
 <head>
-          <link rel="stylesheet" href="http://bootswatch.com/spacelab/bootstrap.min.css">
+          <link rel="stylesheet" href="http://bootswatch.com/united/bootstrap.min.css">
 </head>
 
     <body style=" padding-top: 50px;">
@@ -38,6 +38,10 @@
         </div>
 	</div>
 </div>
+<!-- Bootstrap core JavaScript
+    ================================================== -->
+    <script src="http://getbootstrap.com/assets/js/jquery.js"></script>
+    <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
 
