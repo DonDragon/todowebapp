@@ -143,4 +143,19 @@ public class TODOListController {
 		return "about";
 	}
 
+    /**
+     * Edit list
+     */
+    @RequestMapping(value = "/edit/list/{id}", method = RequestMethod.GET)
+    public ModelAndView returnList(@PathVariable Long id) {
+        return new ModelAndView("editlist", "command", dao.load(TODOList.class, id));
+    }
+
+    @RequestMapping(value = "/editList", method = RequestMethod.POST)
+    public String editList(@ModelAttribute("EditList") TODOList todoList, ModelMap map) {
+        dao.update(todoList);
+        return "redirect:/";
+    }
+
+
 }

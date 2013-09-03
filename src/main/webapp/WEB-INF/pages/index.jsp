@@ -43,7 +43,7 @@
          ${fn:length(l.entries)}
     </td>
     <td width="5%">
-         <a href="/lists/edit/${l.id}" class="btn btn-warning"> edit </a>
+         <a href="/edit/list/${l.id}" class="btn btn-warning"> edit </a>
     </td>
    </tr>
    </c:forEach>
