@@ -62,16 +62,6 @@ public class TODOListController {
     }
 
     /**
-     * Update
-     */
-    @RequestMapping(value = "/lists/update", method = RequestMethod.POST)
-    public String update(@ModelAttribute("list") TODOList todoList, BindingResult result) {
-
-        dao.update(todoList);
-        return "redirect:/";
-    }
-
-    /**
      * Show list
      */
     @RequestMapping(value = "/lists/{id}", method = RequestMethod.GET)
@@ -117,17 +107,8 @@ public class TODOListController {
 
     @RequestMapping("/lists/create")
     public ModelAndView showForm() {
-        return new ModelAndView("list", "command", new TODOList());
+        return new ModelAndView("lists/input", "command", new TODOList());
     }
-
-    @RequestMapping(value = "/lists/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView editForm(@PathVariable Long id, ModelMap model) {
-
-        TODOList list = dao.load(TODOList.class, id);
-        model.addAttribute("list", list);
-        return new ModelAndView("lists/edit", "command", list);
-    }
-
 
     @RequestMapping(value="/entries/new", method = RequestMethod.POST)
     public String newEntry(@ModelAttribute("entry") TODOEntry entry) {
@@ -148,7 +129,7 @@ public class TODOListController {
      */
     @RequestMapping(value = "/edit/list/{id}", method = RequestMethod.GET)
     public ModelAndView returnList(@PathVariable Long id) {
-        return new ModelAndView("editlist", "command", dao.load(TODOList.class, id));
+        return new ModelAndView("lists/edit", "command", dao.load(TODOList.class, id));
     }
 
     @RequestMapping(value = "/editList", method = RequestMethod.POST)
