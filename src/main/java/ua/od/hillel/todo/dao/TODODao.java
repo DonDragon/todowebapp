@@ -43,12 +43,6 @@ public class TODODao {
         entityManager.remove( load(TODOList.class, id) );
     }
 
-    public List<TODOList> sortTODOLists() {
-
-        return entityManager.createQuery(
-                "SELECT l FROM TODOList l ORDER BY l.id DESC").getResultList();
-    }
-
     public List<TODOList> sortTODOLists(String param) {
 
         List<TODOList> resultList;
