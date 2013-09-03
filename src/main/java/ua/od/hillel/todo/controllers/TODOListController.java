@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 /**
  * Base controller
@@ -60,6 +61,9 @@ public class TODOListController {
     @RequestMapping(value = "/lists/{id}", method = RequestMethod.GET)
     public ModelAndView show(@PathVariable Long id, ModelMap model) {
         TODOList list = dao.load(TODOList.class, id);
+
+        list.setEntries(dao.sortTODOEntry(id));
+
         model.addAttribute("list", list);
 
         TODOEntry entry = new TODOEntry();
@@ -68,7 +72,7 @@ public class TODOListController {
     }
 
     @RequestMapping(value = "/{entity}/{id}/toggle", method = RequestMethod.GET)
-    public String toggleEntry(@PathVariable String entity, @PathVariable Long id) {
+    public String toggleEntry( @PathVariable String entity, @PathVariable Long id) {
         if (entity.equals("entries")) {
             TODOEntry entry = dao.load(TODOEntry.class, id);
             entry.setDone( !entry.getDone() );

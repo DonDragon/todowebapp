@@ -4,6 +4,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ua.od.hillel.todo.entities.TODOEntry;
 import ua.od.hillel.todo.entities.TODOList;
 
 import javax.persistence.EntityManager;
@@ -71,5 +72,10 @@ public class TODODao {
             return entityManager.createQuery(
                     "SELECT l FROM TODOList l ORDER BY l." + param + " " +order).getResultList();
         }
+    }
+
+    public List<TODOEntry> sortTODOEntry(Long listId) {
+        return entityManager.createQuery(
+                "SELECT l FROM TODOEntry l WHERE l.list.id="+Long.toString(listId)+" ORDER BY l.isDone ASC").getResultList();
     }
 }
