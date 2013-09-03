@@ -17,7 +17,7 @@
                               ${e.content}
                         </td>
                         <td>
-                             <a href="/entry/delete?list_id=${list.id}&entry_id=${e.id}" class="btn btn-danger"> delete </a>
+                             <a href="/entries/delete?list_id=${list.id}&entry_id=${e.id}" class="btn btn-danger"> delete </a>
                         </td>
                      </tr>
                   </c:forEach>

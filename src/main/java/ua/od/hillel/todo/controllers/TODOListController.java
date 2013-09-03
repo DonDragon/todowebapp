@@ -52,13 +52,26 @@ public class TODOListController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/entry/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/entries/delete", method = RequestMethod.GET)
     public String deleteEntry(@RequestParam("list_id") Long listId,
                               @RequestParam("entry_id") Long entryId) {
 
         dao.deleteEntry(entryId);
 
         return "redirect:/lists/" + listId;
+    }
+
+    /**
+     * Update
+     */
+    @RequestMapping(value = "/lists/update", method = RequestMethod.POST)
+    public String update(@ModelAttribute("list") TODOList todoList, BindingResult result) {
+
+        System.out.println("-------------------------------------------");
+        System.out.println(todoList.getId());
+        System.out.println("-------------------------------------------");
+        dao.update(todoList);
+        return "redirect:/";
     }
 
     /**
@@ -108,6 +121,14 @@ public class TODOListController {
     @RequestMapping("/lists/create")
     public ModelAndView showForm() {
         return new ModelAndView("list", "command", new TODOList());
+    }
+
+    @RequestMapping(value = "/lists/edit/{id}", method = RequestMethod.GET)
+    public ModelAndView editForm(@PathVariable Long id, ModelMap model) {
+
+        TODOList list = dao.load(TODOList.class, id);
+        model.addAttribute("list", list);
+        return new ModelAndView("lists/edit", "command", list);
     }
 
 
