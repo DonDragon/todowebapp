@@ -37,6 +37,7 @@ public class TODOListController {
 	public String list(ModelMap model) {
         logger.debug(model);
         model.addAttribute("lists", dao.findTODOLists());
+        model.addAttribute("allChecked", allListsChecked());
 		return "index";
 	}
 
@@ -154,6 +155,10 @@ public class TODOListController {
 
     private boolean allListsChecked() {
         boolean checked = true;
+
+        if (dao.findTODOLists().size() < 1) {
+            return false;
+        }
 
         for (TODOList list : dao.findTODOLists()) {
             if (!list.getChecked()) {
