@@ -53,7 +53,7 @@ public class TODOListController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/entry/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/entries/delete", method = RequestMethod.GET)
     public String deleteEntry(@RequestParam("list_id") Long listId,
                               @RequestParam("entry_id") Long entryId) {
 
@@ -108,9 +108,8 @@ public class TODOListController {
 
     @RequestMapping("/lists/create")
     public ModelAndView showForm() {
-        return new ModelAndView("list", "command", new TODOList());
+        return new ModelAndView("lists/input", "command", new TODOList());
     }
-
 
     @RequestMapping(value="/entries/new", method = RequestMethod.POST)
     public String newEntry(@ModelAttribute("entry") TODOEntry entry) {
@@ -131,7 +130,7 @@ public class TODOListController {
      */
     @RequestMapping(value = "/edit/list/{id}", method = RequestMethod.GET)
     public ModelAndView returnList(@PathVariable Long id) {
-        return new ModelAndView("editlist", "command", dao.load(TODOList.class, id));
+        return new ModelAndView("lists/edit", "command", dao.load(TODOList.class, id));
     }
 
     @RequestMapping(value = "/editList", method = RequestMethod.POST)
