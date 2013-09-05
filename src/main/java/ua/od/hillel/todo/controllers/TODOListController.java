@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,7 +54,7 @@ public class TODOListController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/entries/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/entry/delete", method = RequestMethod.GET)
     public String deleteEntry(@RequestParam("list_id") Long listId,
                               @RequestParam("entry_id") Long entryId) {
 
@@ -66,16 +67,41 @@ public class TODOListController {
      * Show list
      */
     @RequestMapping(value = "/lists/{id}", method = RequestMethod.GET)
-    public ModelAndView show(@PathVariable Long id, ModelMap model) {
+    public String show(@PathVariable Long id, ModelMap model) {
+        TODOList list = dao.load(TODOList.class, id);
+        model.addAttribute("list", list);
+        model.addAttribute("active", "all");
+        return "lists/show";
+    }
+
+    @RequestMapping(value = "/lists/{id}/{sort}", method = RequestMethod.GET)
+    public String showSortedEntries(@PathVariable Long id, @PathVariable String sort, ModelMap model) {
         TODOList list = dao.load(TODOList.class, id);
 
-        list.setEntries(dao.sortTODOEntry(id));
+        List<TODOEntry> doneEntries = new ArrayList<TODOEntry>();
+        List<TODOEntry> undoneEntries = new ArrayList<TODOEntry>();
+        String active;
+
+        for (TODOEntry entry : list.getEntries()) {
+            if (entry.getDone()) {
+                doneEntries.add(entry);
+            } else {
+                undoneEntries.add(entry);
+            }
+        }
+
+        if (sort.equals("done")) {
+            list.setEntries(doneEntries);
+            model.addAttribute("active", "done");
+        }
+        if (sort.equals("undone")) {
+            list.setEntries(undoneEntries);
+            model.addAttribute("active", "undone");
+        }
 
         model.addAttribute("list", list);
 
-        TODOEntry entry = new TODOEntry();
-        entry.setList(list);
-        return new ModelAndView("lists/show", "command", entry);
+        return "lists/show";
     }
 
     @RequestMapping(value = "/{entity}/{id}/toggle", method = RequestMethod.GET)

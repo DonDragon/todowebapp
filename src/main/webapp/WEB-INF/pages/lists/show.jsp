@@ -3,6 +3,11 @@
 <html>
 <body>
 <h1>${list.title}</h1>
+<ul class="nav nav-pills">
+  <li <c:if test="${active == 'all'}">class="active"</c:if>><a href="/lists/${list.id}">All</a></li>
+  <li <c:if test="${active == 'done'}">class="active"</c:if>><a href="/lists/${list.id}/done">Done</a></li>
+  <li <c:if test="${active == 'undone'}">class="active"</c:if>><a href="/lists/${list.id}/undone">Undone</a></li>
+</ul>
 <div class="table-responsive">
 <table class="table table-hover">
 <c:forEach var="e" items="${list.entries}">
