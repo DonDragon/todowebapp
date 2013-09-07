@@ -93,4 +93,9 @@ public class User {
     public void setTodoList(List<TODOList> todoList) {
         this.todoList = todoList;
     }
+
+    @Override
+    public String toString() {
+        return getUsername();
+    }
 }

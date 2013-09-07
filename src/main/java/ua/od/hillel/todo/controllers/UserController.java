@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ua.od.hillel.todo.dao.TODODao;
 import ua.od.hillel.todo.entities.User;
+import ua.od.hillel.todo.entities.UserRoles;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,7 +36,16 @@ public class UserController {
     @RequestMapping(value="register", method=RequestMethod.POST)
     public String submitRegisterForm(@ModelAttribute("User") User user, Model m) {
 
+        user.setEnabled(1);
         dao.create(user);
+
+        User newUser = dao.findUserByName(user.getUsername());
+
+        UserRoles userRoles = new UserRoles();
+        userRoles.setUser_id(newUser.getId());
+        userRoles.setAuthority("ROLE_USER");
+        dao.create(userRoles);
+
         m.addAttribute("message", "Successfully saved person: " + user.toString());
         return "user/register";
     }
