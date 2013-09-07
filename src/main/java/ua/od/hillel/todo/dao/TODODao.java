@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ua.od.hillel.todo.entities.TODOEntry;
 import ua.od.hillel.todo.entities.TODOList;
+import ua.od.hillel.todo.entities.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -81,5 +82,18 @@ public class TODODao {
     public List<TODOEntry> sortTODOEntry(Long listId) {
         return entityManager.createQuery(
                 "SELECT l FROM TODOEntry l WHERE l.list.id="+Long.toString(listId)+" ORDER BY l.isDone ASC").getResultList();
+    }
+
+    public User findUserByName(String name) {
+        return (User) entityManager.createQuery( "SELECT l FROM users l WHERE l.username=:name")
+                .setParameter("name", name)
+                .getSingleResult();
+    }
+
+    public List<TODOList> findTODOListsByUser(Long userId) {
+        return entityManager.createQuery(
+                "SELECT l FROM TODOList l WHERE l.user.id=:userId")
+                .setParameter("userId", userId)
+                .getResultList();
     }
 }

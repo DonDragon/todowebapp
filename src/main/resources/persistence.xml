@@ -6,11 +6,12 @@
          
         <properties>
              <property name="hibernate.hbm2ddl.auto"
-                       value="create-drop"/>
+                       value="none"/>
         </properties>
 
          <class>ua.od.hillel.todo.entities.TODOEntry</class>
          <class>ua.od.hillel.todo.entities.TODOList</class>
+         <class>ua.od.hillel.todo.entities.User</class>
 
     </persistence-unit>
 

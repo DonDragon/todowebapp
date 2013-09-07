@@ -4,6 +4,15 @@
 <html>
 <head>
           <link rel="stylesheet" href="http://bootswatch.com/united/bootstrap.min.css">
+           <style>
+                body { background-color: #eee; font: helvetica; }
+                #container { width: 500px; background-color: #fff; margin: 30px auto; padding: 30px; border-radius: 5px; box-shadow: 5px; }
+                .green { font-weight: bold; color: green; }
+                .message { margin-bottom: 10px; }
+                label {width:70px; display:inline-block;}
+                form {line-height: 160%; }
+                .hide { display: none; }
+           </style>
 </head>
 
     <body style=" padding-top: 50px;">
@@ -23,6 +32,8 @@
           <ul class="nav navbar-nav">
             <li <c:if test="${pageContext.request.requestURI == '/'}">  class="active"   </c:if> ><a href="/">Home</a></li>
             <li <c:if test="${pageContext.request.requestURI == '/about'}">  class="active"   </c:if> ><a href="/about">About</a></li>
+            <li <c:if test="${pageContext.request.requestURI == '/logout'}">  class="active"   </c:if> ><a href="<c:url value="/j_spring_security_logout" />" > Logout </a></li>
+            <li <c:if test="${pageContext.request.requestURI == 'register'}">  class="active"   </c:if> ><a href="register">Register</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
