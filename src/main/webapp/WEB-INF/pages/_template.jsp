@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <html>
 <head>
@@ -32,8 +33,13 @@
           <ul class="nav navbar-nav">
             <li <c:if test="${pageContext.request.requestURI == '/'}">  class="active"   </c:if> ><a href="/">Home</a></li>
             <li <c:if test="${pageContext.request.requestURI == '/about'}">  class="active"   </c:if> ><a href="/about">About</a></li>
-            <li <c:if test="${pageContext.request.requestURI == '/logout'}">  class="active"   </c:if> ><a href="<c:url value="/j_spring_security_logout" />" > Logout </a></li>
-            <li <c:if test="${pageContext.request.requestURI == 'register'}">  class="active"   </c:if> ><a href="register">Register</a></li>
+                  <li <c:if test="${pageContext.request.requestURI == 'register'}">  class="active"   </c:if> ><a href="register">Register</a></li>
+            <sec:authorize access="isAuthenticated()">
+                <li> <a><sec:authentication property="principal.username"/></a> </li>
+                <li <c:if test="${pageContext.request.requestURI == '/logout'}">  class="active"   </c:if> ><a href="<c:url value="/j_spring_security_logout" />" > Logout </a></li>
+
+            </sec:authorize>
+
           </ul>
         </div><!--/.nav-collapse -->
       </div>
