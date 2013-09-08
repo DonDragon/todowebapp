@@ -27,13 +27,13 @@ public class UserController {
     @Autowired
     private TODODao dao;
 
-    @RequestMapping(value="register", method= RequestMethod.GET)
+    @RequestMapping(value="/register", method= RequestMethod.GET)
     public String loadRegisterPage(Model m) {
         m.addAttribute("User", new User());
         return "user/register";
     }
 
-    @RequestMapping(value="register", method=RequestMethod.POST)
+    @RequestMapping(value="/register", method=RequestMethod.POST)
     public String submitRegisterForm(@ModelAttribute("User") User user, Model m) {
 
         user.setEnabled(1);
@@ -54,7 +54,6 @@ public class UserController {
     public String login(ModelMap model) {
 
         return "user/login";
-
     }
 
     @RequestMapping(value="/loginfailed", method = RequestMethod.GET)
@@ -62,13 +61,11 @@ public class UserController {
 
         model.addAttribute("error", "true");
         return "user/login";
-
     }
 
     @RequestMapping(value="/logout", method = RequestMethod.GET)
     public String logout(ModelMap model) {
 
         return "user/login";
-
     }
 }

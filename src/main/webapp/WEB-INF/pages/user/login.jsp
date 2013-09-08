@@ -26,25 +26,14 @@
         <form name='f' action="<c:url value='j_spring_security_check' />"
         		method='POST'>
 
+        		<label for="userNameInput">User: </label>
+        		<input id="userNameInput" class="form-control" type='text' name='j_username' value=''>
 
-        			<tr>
-        				<td>User:</td>
-        				<td><input class="form-control" type='text' name='j_username' value=''>
-        				<br />
-        			</tr>
-        			<tr style="height: 60">
-        				<td>Password:</td>
-        				<td>
-        				    <input class="form-control" type='password' name='j_password' />
-        				</td>
-        				<br />
-        			</tr>
-        			<tr>
-        				<td colspan='2'><input class="btn btn-success" name="submit" type="submit"
-        					value="submit" />
-        				</td>
-        			</tr>
+        		<label for="userPasswordInput">Password: </label>
+        		<input id="userPasswordInput" class="form-control" type='password' name='j_password' />
+        		<br />
 
+        		<input class="btn btn-success" name="submit" type="submit" value="submit" />
         	</form>
     </div>
 </body>
