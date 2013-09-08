@@ -1,7 +1,7 @@
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
  <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-		<h1>${user} your TODO lists</h1>
+		<h1>Your TODO lists</h1>
 
  <table>
     <tr>
