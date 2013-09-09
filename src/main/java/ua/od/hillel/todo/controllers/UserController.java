@@ -34,6 +34,7 @@ public class UserController {
                                      BindingResult result, Model m) {
 
         if (result.hasErrors()) {
+            m.addAttribute("hasError", true);
             return "user/register";
         }
 

@@ -34,7 +34,10 @@
           <ul class="nav navbar-nav">
             <li <c:if test="${pageContext.request.requestURI == '/'}">  class="active"   </c:if> ><a href="/">Home</a></li>
             <li <c:if test="${pageContext.request.requestURI == '/about'}">  class="active"   </c:if> ><a href="/about">About</a></li>
-                  <li <c:if test="${pageContext.request.requestURI == 'register'}">  class="active"   </c:if> ><a href="register">Register</a></li>
+             <sec:authorize access="isAnonymous()">
+                   <li <c:if test="${pageContext.request.requestURI == '/login'}">  class="active"   </c:if> ><a href="/login">Login</a></li>
+                  <li <c:if test="${pageContext.request.requestURI == '/register'}">  class="active"   </c:if> ><a href="register">Register</a></li>
+             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
                 <li> <a><sec:authentication property="principal.username"/></a> </li>
                 <li <c:if test="${pageContext.request.requestURI == '/logout'}">  class="active"   </c:if> ><a href="<c:url value="/j_spring_security_logout" />" > Logout </a></li>
