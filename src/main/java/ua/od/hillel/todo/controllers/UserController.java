@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,13 +12,8 @@ import ua.od.hillel.todo.dao.TODODao;
 import ua.od.hillel.todo.entities.User;
 import ua.od.hillel.todo.entities.UserRoles;
 
-/**
- * Created with IntelliJ IDEA.
- * User: altair
- * Date: 07.09.13
- * Time: 10:36
- * To change this template use File | Settings | File Templates.
- */
+import javax.validation.Valid;
+
 @Controller
 public class UserController {
 
@@ -34,7 +30,17 @@ public class UserController {
     }
 
     @RequestMapping(value="/register", method=RequestMethod.POST)
-    public String submitRegisterForm(@ModelAttribute("User") User user, Model m) {
+    public String submitRegisterForm(@Valid @ModelAttribute("User") User user,
+                                     BindingResult result, Model m) {
+
+        if (result.hasErrors()) {
+            return "user/register";
+        }
+
+        if (dao.isUsernameExists(user.getUsername())) {
+            m.addAttribute("errorMessage", "Username already exists");
+            return "user/register";
+        }
 
         user.setEnabled(1);
         dao.create(user);

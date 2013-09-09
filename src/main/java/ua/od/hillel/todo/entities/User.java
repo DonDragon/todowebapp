@@ -1,17 +1,15 @@
 package ua.od.hillel.todo.entities;
 
+import org.hibernate.validator.constraints.*;
+import org.springframework.format.annotation.NumberFormat;
+
 import javax.persistence.*;
 import javax.persistence.Column;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: altair
- * Date: 06.09.13
- * Time: 23:14
- * To change this template use File | Settings | File Templates.
- */
 @Entity(name="users")
 @Table(name="users")
 public class User {
@@ -20,15 +18,24 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
+    @Size(min = 3, max = 20)
     @Column(nullable = false, unique=true)
     private String username;
 
+    @NotNull
+    @NumberFormat(style = NumberFormat.Style.NUMBER)
+    @Range(min = 6, max = 100)
     @Column
     private Integer age;
 
+    @NotBlank
+    @Email
     @Column
     private String email;
 
+    @NotBlank
+    @Size(min = 6, max = 20)
     @Column
     private String password;
 

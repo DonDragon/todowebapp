@@ -96,4 +96,15 @@ public class TODODao {
                 .setParameter("userId", userId)
                 .getResultList();
     }
+
+    public boolean isUsernameExists(String username) {
+        List<User> users = entityManager.createQuery("SELECT l from users l").getResultList();
+
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

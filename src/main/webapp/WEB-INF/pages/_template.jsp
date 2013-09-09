@@ -9,6 +9,7 @@
                 body { background-color: #eee; font: helvetica; }
                 #container { width: 500px; background-color: #fff; margin: 30px auto; padding: 30px; border-radius: 5px; box-shadow: 5px; }
                 .green { font-weight: bold; color: green; }
+                .red { font-weight: bold; color: red; }
                 .message { margin-bottom: 10px; }
                 label {width:70px; display:inline-block;}
                 form {line-height: 160%; }
