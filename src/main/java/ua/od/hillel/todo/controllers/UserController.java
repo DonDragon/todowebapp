@@ -36,8 +36,26 @@ public class UserController {
     @RequestMapping(value="register", method=RequestMethod.POST)
     public String submitRegisterForm(@ModelAttribute("User") User user, Model m) {
 
+        /**
+         * Check register form
+         */
+        if(user.getUsername() == "" || user.getEmail() == "" || user.getPassword() == "" || user.getAge() == null){
+            m.addAttribute("message", "Please fill in all fields");
+            return "user/register";
+        }
+
+        try{
+            dao.create(user);
+        }catch(Exception ex){
+            if(!dao.searchUsername(user)){
+                m.addAttribute("message", "This username already used");
+                return "user/register";
+            }
+        }
+
+
+
         user.setEnabled(1);
-        dao.create(user);
 
         User newUser = dao.findUserByName(user.getUsername());
 
