@@ -11,6 +11,8 @@
 
          <class>ua.od.hillel.todo.entities.TODOEntry</class>
          <class>ua.od.hillel.todo.entities.TODOList</class>
+         <class>ua.od.hillel.todo.entities.User</class>
+        <class>ua.od.hillel.todo.entities.UserRoles</class>
 
     </persistence-unit>
 

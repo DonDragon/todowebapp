@@ -3,38 +3,48 @@
 
 		<h1>Your TODO lists</h1>
 
-
-
-  <tr>
-   <td>
-       <a href="/lists/create" class="btn btn-primary">+ Add new TODO list</a>
-   </td>
-  </tr>
+ <table>
+    <tr>
+        <td><a href="/lists/create" class="btn btn-success">+ Add new TODO list</a></button></td>
+        <td><a href="/lists/delete" class="btn btn-danger"> Delete </a></button></td>
+    </tr>
+ </table>
 
   <div style="padding: 50px"/>
 
-  <table class="table table-striped table-bordered table-hover ">
+  <table class="table table-hover">
 
-  <tr align="center">
-        <th style="cursor:pointer" onclick="window.location='/lists/sort/title'">Title</th>
-        <th style="cursor:pointer" onclick="window.location='/lists/sort/description'">Description</th>
-        <th style="cursor:pointer" onclick="window.location='/lists/sort/entry'">Entry</th>
+  <tr class="danger">
+        <td align="center" width="5%" style="cursor:pointer" onclick="window.location='/lists/selectall'">
+            <input type="checkbox"
+                <c:if test="${allChecked}"> checked </c:if>
+            />
+        </td>
+        <th style="cursor:pointer" onclick="window.location='/lists/sort?param=title'">Title</th>
+        <th style="cursor:pointer" onclick="window.location='/lists/sort?param=description'">Description</th>
+        <th style="cursor:pointer" onclick="window.location='/lists/sort?param=entry'">Entry</th>
   </tr>
-  <c:forEach var="l" items="${lists}">
-   <tr style="cursor:pointer;" onclick="window.location='/lists/${l.id}'">
-    <td style="vertical-align:middle" width="25%">
+  <c:forEach var="l" items="${lists}">+
+   <tr>
+   <td align="center" width="5%">
+                 <input onclick="window.location='/lists/${l.id}/toggle'" type="checkbox" style="width:25px; height:25px"
+                                          <c:if test="${l.checked}">
+                                              checked
+                                          </c:if>
+                                      />
+                 </td>
+    <td style="cursor:pointer; vertical-align:middle" onclick="window.location='/lists/${l.id}'"  width="25%">
          ${l.title}
     </td>
-    <td style="vertical-align:middle">
+    <td style="cursor:pointer; vertical-align:middle" onclick="window.location='/lists/${l.id}'">
         ${l.description}
     </td style="vertical-align:middle">
-    <td style="vertical-align:middle" align="center" width="10%">
+    <td style="cursor:pointer; vertical-align:middle" onclick="window.location='/lists/${l.id}'" align="center" width="10%">
          ${fn:length(l.entries)}
     </td>
-    <td align="center" width="5%">
-        <a href="/lists/delete/${l.id}" class="btn btn-primary"> delete </a>
+    <td width="5%">
+         <a href="/edit/list/${l.id}" class="btn btn-warning"> edit </a>
     </td>
-
    </tr>
    </c:forEach>
    </table>

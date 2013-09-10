@@ -18,11 +18,34 @@ public class TODOList implements Comparable {
     @Column
     private String description;
 
-    @OneToMany(mappedBy = "list")
+    @Column
+    private Boolean isChecked = false;
+
+    @OneToMany(mappedBy = "list", cascade = CascadeType.REMOVE)
     private List<TODOEntry> entries;
 
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(Boolean checked) {
+        isChecked = checked;
+    }
 
     public Long getId() {
+
         return id;
     }
 

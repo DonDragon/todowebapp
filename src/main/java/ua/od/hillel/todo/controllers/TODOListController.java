@@ -1,20 +1,20 @@
 package ua.od.hillel.todo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import ua.od.hillel.todo.dao.TODODao;
 import ua.od.hillel.todo.entities.TODOEntry;
 import ua.od.hillel.todo.entities.TODOList;
 import org.springframework.web.servlet.ModelAndView;
 import org.apache.log4j.Logger;
-
+import org.springframework.security.core.userdetails.User;
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base controller
@@ -32,53 +32,105 @@ public class TODOListController {
     @Autowired
     private TODODao dao;
 
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String root() {
+        return "redirect:/index";
+    }
     /**
      * List lists
      */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String list(ModelMap model) {
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index( ModelMap model) {
         logger.debug(model);
-        model.addAttribute("lists", dao.findTODOLists());
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String name = user.getUsername();
+
+        ua.od.hillel.todo.entities.User entityUser = dao.findUserByName(name);
+        model.addAttribute("user", entityUser.getUsername());
+        model.addAttribute("lists", dao.findTODOListsByUser(entityUser.getId()));
+        model.addAttribute("allChecked", allListsChecked());
 		return "index";
 	}
 
     /**
-     * Sort lists
-     */
-    @RequestMapping(value = "/lists/sort/", method = RequestMethod.GET)
-    public String sort(ModelMap model) {
-        model.addAttribute("lists", dao.sortTODOLists());
-        return "index";
-    }
-
-    /**
      * Delete
      */
-    @RequestMapping(value = "/lists/delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable Long id, ModelMap model) {
-        dao.delete(id);
+    @RequestMapping(value = "/lists/delete", method = RequestMethod.GET)
+    public String delete() {
+        for (TODOList list : dao.findTODOLists()) {
+            if (list.getChecked())
+                dao.delete(list.getId());
+        }
         return "redirect:/";
+    }
+
+    @RequestMapping(value = "/entry/delete", method = RequestMethod.GET)
+    public String deleteEntry(@RequestParam("list_id") Long listId,
+                              @RequestParam("entry_id") Long entryId) {
+
+        dao.deleteEntry(entryId);
+
+        return "redirect:/lists/" + listId;
     }
 
     /**
      * Show list
      */
     @RequestMapping(value = "/lists/{id}", method = RequestMethod.GET)
-    public ModelAndView show(@PathVariable Long id, ModelMap model) {
+    public String show(@PathVariable Long id, ModelMap model) {
         TODOList list = dao.load(TODOList.class, id);
         model.addAttribute("list", list);
-
-        TODOEntry entry = new TODOEntry();
-        entry.setList(list);
-        return new ModelAndView("lists/show", "command", entry);
+        model.addAttribute("active", "all");
+        return "lists/show";
     }
 
-    @RequestMapping(value = "/entries/{id}/toggle", method = RequestMethod.GET)
-    public String toggleEntry(@PathVariable Long id) {
-         TODOEntry entry = dao.load(TODOEntry.class, id);
-         entry.setDone( !entry.getDone() );
-         dao.update(entry);
-         return "redirect:/lists/" + entry.getList().getId();
+    @RequestMapping(value = "/lists/{id}/{sort}", method = RequestMethod.GET)
+    public String showSortedEntries(@PathVariable Long id, @PathVariable String sort, ModelMap model) {
+        TODOList list = dao.load(TODOList.class, id);
+
+        List<TODOEntry> doneEntries = new ArrayList<TODOEntry>();
+        List<TODOEntry> undoneEntries = new ArrayList<TODOEntry>();
+        String active;
+
+        for (TODOEntry entry : list.getEntries()) {
+            if (entry.getDone()) {
+                doneEntries.add(entry);
+            } else {
+                undoneEntries.add(entry);
+            }
+        }
+
+        if (sort.equals("done")) {
+            list.setEntries(doneEntries);
+            model.addAttribute("active", "done");
+        }
+        if (sort.equals("undone")) {
+            list.setEntries(undoneEntries);
+            model.addAttribute("active", "undone");
+        }
+
+        model.addAttribute("list", list);
+
+        return "lists/show";
+    }
+
+    @RequestMapping(value = "/{entity}/{id}/toggle", method = RequestMethod.GET)
+    public String toggleEntry( @PathVariable String entity, @PathVariable Long id) {
+        if (entity.equals("entries")) {
+            TODOEntry entry = dao.load(TODOEntry.class, id);
+            entry.setDone( !entry.getDone() );
+            dao.update(entry);
+            return "redirect:/lists/" + entry.getList().getId();
+        }
+        if (entity.equals("lists")) {
+            TODOList list = dao.load(TODOList.class, id) ;
+            list.setChecked(!list.getChecked());
+            dao.update(list);
+            return "redirect:/";
+        } else
+            return "404";
     }
 
     /**
@@ -87,6 +139,12 @@ public class TODOListController {
 
     @RequestMapping(value = "/lists/addlist", method = RequestMethod.POST)
     public String addList(@ModelAttribute("list") TODOList todoList, BindingResult result) {
+
+        User userData = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String name = userData.getUsername();
+        ua.od.hillel.todo.entities.User user = dao.findUserByName(name);
+        todoList.setUser(user);
+
         dao.create(todoList);
         return "redirect:/";
     }
@@ -94,9 +152,9 @@ public class TODOListController {
 
     @RequestMapping("/lists/create")
     public ModelAndView showForm() {
-        return new ModelAndView("list", "command", new TODOList());
-    }
 
+        return new ModelAndView("lists/input", "command", new TODOList());
+    }
 
     @RequestMapping(value="/entries/new", method = RequestMethod.POST)
     public String newEntry(@ModelAttribute("entry") TODOEntry entry) {
@@ -111,5 +169,62 @@ public class TODOListController {
 	public String about() {
 		return "about";
 	}
+
+    /**
+     * Edit list
+     */
+    @RequestMapping(value = "/edit/list/{id}", method = RequestMethod.GET)
+    public ModelAndView returnList(@PathVariable Long id) {
+        return new ModelAndView("lists/edit", "command", dao.load(TODOList.class, id));
+    }
+
+    @RequestMapping(value = "/editList", method = RequestMethod.POST)
+    public String editList(@ModelAttribute("EditList") TODOList todoList, ModelMap map) {
+
+        User userData = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String name = userData.getUsername();
+        ua.od.hillel.todo.entities.User user = dao.findUserByName(name);
+        todoList.setUser(user);
+
+        dao.update(todoList);
+        return "redirect:/";
+    }
+
+    /**
+     * Toggle all lists
+     */
+    @RequestMapping(value = "/lists/selectall", method = RequestMethod.GET)
+    public String toggleAllLists() {
+        if (allListsChecked()) {
+            checkLists(false);
+        } else {
+            checkLists(true);
+        }
+       return "redirect:/";
+    }
+
+    private boolean allListsChecked() {
+        boolean checked = true;
+
+        if (dao.findTODOLists().size() < 1) {
+            return false;
+        }
+
+        for (TODOList list : dao.findTODOLists()) {
+            if (!list.getChecked()) {
+                checked = false;
+                break;
+            }
+        }
+        return checked;
+    }
+
+    private void checkLists(Boolean b) {
+        for (TODOList list : dao.findTODOLists()) {
+            list.setChecked(b);
+            dao.update(list);
+        }
+
+    }
 
 }

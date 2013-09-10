@@ -4,7 +4,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ua.od.hillel.todo.entities.TODOEntry;
 import ua.od.hillel.todo.entities.TODOList;
+import ua.od.hillel.todo.entities.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -43,10 +45,8 @@ public class TODODao {
         entityManager.remove( load(TODOList.class, id) );
     }
 
-    public List<TODOList> sortTODOLists() {
-
-        return entityManager.createQuery(
-                "SELECT l FROM TODOList l ORDER BY l.id DESC").getResultList();
+    public void deleteEntry(Long id) {
+        entityManager.remove( load(TODOEntry.class, id) );
     }
 
     public List<TODOList> sortTODOLists(String param) {
@@ -77,5 +77,23 @@ public class TODODao {
             return entityManager.createQuery(
                     "SELECT l FROM TODOList l ORDER BY l." + param + " " +order).getResultList();
         }
+    }
+
+    public List<TODOEntry> sortTODOEntry(Long listId) {
+        return entityManager.createQuery(
+                "SELECT l FROM TODOEntry l WHERE l.list.id="+Long.toString(listId)+" ORDER BY l.isDone ASC").getResultList();
+    }
+
+    public User findUserByName(String name) {
+        return (User) entityManager.createQuery( "SELECT l FROM users l WHERE l.username=:name")
+                .setParameter("name", name)
+                .getSingleResult();
+    }
+
+    public List<TODOList> findTODOListsByUser(Long userId) {
+        return entityManager.createQuery(
+                "SELECT l FROM TODOList l WHERE l.user.id=:userId")
+                .setParameter("userId", userId)
+                .getResultList();
     }
 }
