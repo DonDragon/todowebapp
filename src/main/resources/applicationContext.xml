@@ -28,6 +28,8 @@
 
     <mvc:annotation-driven />
 
+    <mvc:resources mapping="/images/*" location="/images/" />
+
     <bean id="propertyConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
           p:location="classpath:jdbc.properties" />

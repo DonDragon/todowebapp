@@ -1,6 +1,7 @@
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
  <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
+        <img src="<c:url value='/images/${icon}' />" alt="TestDisplay"/>
 		<h1>Your TODO lists</h1>
 
  <table>
