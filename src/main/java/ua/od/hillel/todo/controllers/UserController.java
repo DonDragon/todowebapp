@@ -40,7 +40,6 @@ public class UserController {
         dao.create(user);
 
         User newUser = dao.findUserByName(user.getUsername());
-
         UserRoles userRoles = new UserRoles();
         userRoles.setUser_id(newUser.getId());
         userRoles.setAuthority("ROLE_USER");
