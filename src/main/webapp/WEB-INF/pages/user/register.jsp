@@ -11,10 +11,10 @@
       <form:input class="form-control" path="username" id="nameInput" />
 
       <label for="passwordInput">Password: </label>
-            <form:input class="form-control" path="password" id="passwordInput" />
+      <form:password class="form-control" path="password" id="passwordInput" />
 
       <label for="ageInput">Age: </label>
-      <form:input class="form-control" path="age" id="ageInput" />
+      <form:input type="number" min="1" max="120" class="form-control" path="age" id="ageInput" />
 
       <label for="emailInput">Email: </label>
       <form:input class="form-control" path="email" id="emailInput" />

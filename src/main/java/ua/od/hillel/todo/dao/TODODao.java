@@ -96,4 +96,8 @@ public class TODODao {
                 .setParameter("userId", userId)
                 .getResultList();
     }
+
+    public boolean searchUsername(Object o){
+        return entityManager.contains(o);
+    }
 }
