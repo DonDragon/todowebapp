@@ -12,13 +12,13 @@
 <table class="table table-hover">
 <c:forEach var="e" items="${list.entries}">
 	<tr>
-		<td width="5%" ><input onclick="window.location='/entries/${e.id}/toggle'" type="checkbox"
+		<td width="5%" ><input id="${e.id}" onclick="window.location='/entries/${e.id}/toggle'" type="checkbox"
              style="width:25px; height:25px; vertical-align: middle"
                 <c:if test="${e.done}">
                     checked
                 </c:if>
         /></td>
-		<td>${e.content}</td>
+		<td><label for="${e.id}">${e.content}</label></td>
 		<td width="5%"><a href="/entry/delete?list_id=${list.id}&entry_id=${e.id}" class="btn btn-danger"> delete </a></td>
 	</tr>
 	</c:forEach>
