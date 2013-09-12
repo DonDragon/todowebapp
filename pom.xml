@@ -13,9 +13,18 @@
 		<junit.version>4.11</junit.version>
 		<jdk.version>1.6</jdk.version>
 		<jetty.version>8.1.8.v20121106</jetty.version>
+        <spring.test.version>3.2.4.RELEASE</spring.test.version>
 	</properties>
 
 	<dependencies>
+
+        <!-- Spring TEST -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.test.version}</version>
+        </dependency>
+
 
         <!-- Validation START -->
         <dependency>
