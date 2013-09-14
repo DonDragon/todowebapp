@@ -49,7 +49,7 @@ public class TODOListController {
 
         ua.od.hillel.todo.entities.User entityUser = dao.findUserByName(name);
         model.addAttribute("user", entityUser.getUsername());
-        model.addAttribute("icon", entityUser.getIconName());
+
         model.addAttribute("lists", dao.findTODOListsByUser(entityUser.getId()));
         model.addAttribute("allChecked", allListsChecked());
 		return "index";

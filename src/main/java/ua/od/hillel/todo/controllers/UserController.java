@@ -8,15 +8,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.multipart.MultipartFile;
 import ua.od.hillel.todo.dao.TODODao;
 import ua.od.hillel.todo.entities.User;
 import ua.od.hillel.todo.entities.UserRoles;
-import ua.od.hillel.todo.model.UploadUser;
-import ua.od.hillel.todo.validator.FileValidator;
 
 import javax.validation.Valid;
-import java.io.*;
 
 @Controller
 public class UserController {
@@ -27,25 +23,20 @@ public class UserController {
     @Autowired
     private TODODao dao;
 
-    @Autowired
-    FileValidator fileValidator;
-
     @RequestMapping(value="/register", method= RequestMethod.GET)
     public String loadRegisterPage(Model m) {
-        m.addAttribute("UploadUser", new UploadUser());
+        m.addAttribute("User", new User());
         return "user/register";
     }
 
     @RequestMapping(value="/register", method=RequestMethod.POST)
-    public String submitRegisterForm(@Valid @ModelAttribute("UploadUser") UploadUser uploadUser,
+    public String submitRegisterForm(@Valid @ModelAttribute("User") User user,
                                      BindingResult result, Model m) {
 
         if (result.hasErrors()) {
             m.addAttribute("hasError", true);
             return "user/register";
         }
-
-        User user = new User(uploadUser);
 
         if (dao.isUsernameExists(user.getUsername())) {
             m.addAttribute("errorMessage", "Username already exists");
@@ -61,40 +52,6 @@ public class UserController {
         userRoles.setUser_id(newUser.getId());
         userRoles.setAuthority("ROLE_USER");
         dao.create(userRoles);
-
-        // save photo
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
-
-        MultipartFile file = uploadUser.getFile();
-        fileValidator.validate(uploadUser.getFile(), result);
-
-        String fileName = file.getOriginalFilename();
-
-        if (result.hasErrors()) {
-            m.addAttribute("errorMessage", "Select image");
-            m.addAttribute("UploadUser", uploadUser);
-            return "user/register";
-        }
-
-        try {
-            inputStream = file.getInputStream();
-
-            File newFile = new File("src/main/webapp/images/" + fileName);
-            if (!newFile.exists()) {
-                newFile.createNewFile();
-            }
-            outputStream = new FileOutputStream(newFile);
-            int read = 0;
-            byte[] bytes = new byte[1024];
-
-            while ((read = inputStream.read(bytes)) != -1) {
-                outputStream.write(bytes, 0, read);
-            }
-
-        } catch(IOException ex) {
-            ex.printStackTrace();
-        }
 
         m.addAttribute("message", "Successfully saved person: " + user.toString());
         return "user/register";

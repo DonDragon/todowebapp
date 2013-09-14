@@ -2,7 +2,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <head>
 <title>Register Page</title>
-<script type="text/javascript" src="jquery-1.2.6.min.js"></script>
 </head>
   <div id="container" >
 
@@ -10,11 +9,11 @@
     <c:if test="${not empty message}"><div class="alert alert-success">${message}</div></c:if>
     <c:if test="${not empty errorMessage}"><div class="alert alert-danger">${errorMessage}</div></c:if>
 
-    <form:form modelAttribute="UploadUser" method="POST" action="register" enctype="multipart/form-data">
+    <form:form modelAttribute="User" method="POST" action="register">
       <label for="nameInput">Name: </label>
       <br/>
-      <font color='red'><form:errors path="userName" /> </font>
-      <form:input class="form-control" path="userName" id="nameInput" value="${User.username}"/>
+      <font color='red'><form:errors path="username" /> </font>
+      <form:input class="form-control" path="username" id="nameInput" value="${User.username}"/>
 
       <label for="passwordInput">Password: </label>
       <br/>
@@ -30,12 +29,6 @@
       <br/>
       <font color='red'><form:errors path="email"/> </font>
       <form:input class="form-control" path="email" id="emailInput" value="${User.email}" />
-      <br/>
-
-      <h5>Choose your avatar:</h5>
-
-      <font color='red'><form:errors path="file" id="chooseFile"/> </font>
-      <input type="file" name="file" />
       <br/>
 
       <input type="submit" value="Submit" class="btn btn-success" />

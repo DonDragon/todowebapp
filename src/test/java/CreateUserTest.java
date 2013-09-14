@@ -25,7 +25,6 @@ public class CreateUserTest {
         user.setUsername("Test User");
         user.setAge(27);
         user.setEmail("test@mail.com");
-        user.setIconName("test");
         user.setPassword("123456");
 
         dao.create(user);

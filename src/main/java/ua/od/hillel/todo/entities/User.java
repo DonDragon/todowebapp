@@ -2,7 +2,6 @@ package ua.od.hillel.todo.entities;
 
 import org.hibernate.validator.constraints.*;
 import org.springframework.format.annotation.NumberFormat;
-import ua.od.hillel.todo.model.UploadUser;
 
 import javax.persistence.*;
 import javax.persistence.Column;
@@ -43,30 +42,12 @@ public class User {
     @Column
     private Integer enabled;
 
-    @Column
-    private String iconName;
-
-    public String getIconName() {
-        return iconName;
-    }
-
-    public void setIconName(String iconName) {
-        this.iconName = iconName;
-    }
 
     @OneToMany(mappedBy="user")
     private List<TODOList> todoList;
 
     public User() {
         // empty
-    }
-
-    public User(UploadUser user) {
-        setUsername(user.getUserName());
-        setAge(user.getAge());
-        setPassword(user.getPassword());
-        setEmail(user.getEmail());
-        setIconName(user.getFile().getOriginalFilename());
     }
 
     public Long getId() {
