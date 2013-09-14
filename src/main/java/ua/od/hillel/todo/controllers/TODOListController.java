@@ -1,6 +1,7 @@
 package ua.od.hillel.todo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -81,7 +82,18 @@ public class TODOListController {
      */
     @RequestMapping(value = "/lists/{id}", method = RequestMethod.GET)
     public String show(@PathVariable Long id, ModelMap model) {
+
         TODOList list = dao.load(TODOList.class, id);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); //get logged in username
+
+        ua.od.hillel.todo.entities.User user = dao.findUserByName(name);
+
+        if ( ! user.getTodoList().contains(list)) {
+            return "redirect:/index";
+        }
+
         model.addAttribute("list", list);
         model.addAttribute("active", "all");
         return "lists/show";
