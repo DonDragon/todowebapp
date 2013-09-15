@@ -1,5 +1,6 @@
 package ua.od.hillel.todo.controllers;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import sun.security.provider.MD5;
 import ua.od.hillel.todo.dao.TODODao;
 import ua.od.hillel.todo.entities.User;
 import ua.od.hillel.todo.entities.UserRoles;
@@ -51,8 +53,11 @@ public class UserController {
             m.addAttribute("errorMessage", "Username already exists");
             return "user/register";
         }
-
+        user.setPassword(
+           DigestUtils.md5Hex( user.getPassword() )
+        );
         user.setEnabled(1);
+
         dao.create(user);
 
         UserRoles userRoles = new UserRoles();

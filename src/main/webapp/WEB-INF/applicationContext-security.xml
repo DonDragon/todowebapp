@@ -16,8 +16,11 @@
 		<logout logout-success-url="/login" />
 	</http>
 
+
+
 	<authentication-manager>
 		<authentication-provider>
+            <password-encoder hash="md5"/>
 			<jdbc-user-service data-source-ref="dataSource"
 				
 				users-by-username-query="
