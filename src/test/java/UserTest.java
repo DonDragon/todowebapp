@@ -9,18 +9,19 @@ import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(
-        {"classpath:applicationContext.xml",
-         "file:src/main/webapp//WEB-INF/mvc-dispatcher-servlet.xml",
-         "file:src/main/webapp//WEB-INF/spring-security.xml"
-        })
-public class CreateUserTest {
+@ContextConfiguration({
+    "classpath:applicationContext.xml",
+    "file:src/main/webapp//WEB-INF/applicationContext-mvc.xml",
+    "file:src/main/webapp//WEB-INF/applicationContext-security.xml"
+})
+public class UserTest {
 
     @Autowired
     TODODao dao;
 
     @Test
-    public void test() {
+    public void createUserTest() {
+
         User user = new User();
         user.setUsername("Test User");
         user.setAge(27);
@@ -30,8 +31,6 @@ public class CreateUserTest {
         dao.create(user);
 
         assertNotNull(dao.findUserByName("Test User"));
-
-
     }
 
 }

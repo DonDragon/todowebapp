@@ -19,10 +19,12 @@ import java.util.List;
 @Transactional
 public class TODODao {
 
-    private String order = "DESC";
-
     @PersistenceContext
     private EntityManager entityManager;
+
+    private String order = "DESC";
+
+
 
     public List<TODOList> findTODOLists() {
         return entityManager.createQuery(
@@ -39,6 +41,7 @@ public class TODODao {
 
     public void create(Object o) {
         entityManager.persist(o);
+        entityManager.flush();
     }
 
     public void delete(Long id) {

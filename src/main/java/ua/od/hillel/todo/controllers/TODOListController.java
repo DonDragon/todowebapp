@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.userdetails.User;
 import javax.persistence.EntityManager;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,9 +43,9 @@ public class TODOListController {
      * List lists
      */
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index( ModelMap model) {
+	public String index(ModelMap model, Principal p) {
         logger.debug(model);
-
+        logger.error(p.getName());
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String name = user.getUsername();
 
@@ -238,6 +239,15 @@ public class TODOListController {
             dao.update(list);
         }
 
+    }
+
+    /**
+     * Sort lists
+     */
+    @RequestMapping(value = "/lists/sort", method = RequestMethod.GET)
+    public String sort(@RequestParam("param") String sortBy,  ModelMap model) {
+        model.addAttribute("lists", dao.sortTODOLists(sortBy) );
+        return "index";
     }
 
 }

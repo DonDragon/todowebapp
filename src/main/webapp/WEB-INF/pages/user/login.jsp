@@ -26,10 +26,10 @@
         <form name='f' action="<c:url value='j_spring_security_check' />"
         		method='POST'>
 
-        		<label for="userNameInput">User: </label>
+        		<label for="userNameInput">Username </label>
         		<input id="userNameInput" class="form-control" type='text' name='j_username' value=''>
 
-        		<label for="userPasswordInput">Password: </label>
+        		<label for="userPasswordInput">Password </label>
         		<input id="userPasswordInput" class="form-control" type='password' name='j_password' />
         		<br />
 

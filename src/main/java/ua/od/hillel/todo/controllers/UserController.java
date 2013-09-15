@@ -14,6 +14,9 @@ import ua.od.hillel.todo.entities.UserRoles;
 
 import javax.validation.Valid;
 
+/**
+ * User Controller
+ */
 @Controller
 public class UserController {
 
@@ -23,12 +26,18 @@ public class UserController {
     @Autowired
     private TODODao dao;
 
+    /**
+     * Show Registration
+     */
     @RequestMapping(value="/register", method= RequestMethod.GET)
     public String loadRegisterPage(Model m) {
         m.addAttribute("User", new User());
         return "user/register";
     }
 
+    /**
+     * Register / create new user
+     */
     @RequestMapping(value="/register", method=RequestMethod.POST)
     public String submitRegisterForm(@Valid @ModelAttribute("User") User user,
                                      BindingResult result, Model m) {
@@ -46,33 +55,30 @@ public class UserController {
         user.setEnabled(1);
         dao.create(user);
 
-        User newUser = dao.findUserByName(user.getUsername());
-
         UserRoles userRoles = new UserRoles();
-        userRoles.setUser_id(newUser.getId());
+        userRoles.setUser_id(user.getId());
         userRoles.setAuthority("ROLE_USER");
         dao.create(userRoles);
 
         m.addAttribute("message", "Successfully saved person: " + user.toString());
-        return "user/register";
+        return "user/register_success";
     }
 
+    /**
+     * Show login
+     */
     @RequestMapping(value="/login", method = RequestMethod.GET)
     public String login(ModelMap model) {
-
         return "user/login";
     }
 
+    /**
+     * Login failed
+     */
     @RequestMapping(value="/loginfailed", method = RequestMethod.GET)
     public String loginerror(ModelMap model) {
-
         model.addAttribute("error", "true");
         return "user/login";
     }
 
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public String logout(ModelMap model) {
-
-        return "user/login";
-    }
 }

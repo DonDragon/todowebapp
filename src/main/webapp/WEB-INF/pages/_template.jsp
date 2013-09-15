@@ -39,9 +39,8 @@
                   <li <c:if test="${pageContext.request.requestURI == '/register'}">  class="active"   </c:if> ><a href="register">Register</a></li>
              </sec:authorize>
             <sec:authorize access="isAuthenticated()">
-                <li> <a><sec:authentication property="principal.username"/></a> </li>
-                <li <c:if test="${pageContext.request.requestURI == '/logout'}">  class="active"   </c:if> ><a href="<c:url value="/j_spring_security_logout" />" > Logout </a></li>
-
+                <li> <a style="font-weight:bold"><sec:authentication property="principal.username"/>  </a>   </li>
+                <li> <a href="<c:url value='/j_spring_security_logout' />" > Logout </a> </li>
             </sec:authorize>
 
           </ul>
