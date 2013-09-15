@@ -30,7 +30,7 @@ public class UserTest {
 
         dao.create(user);
 
-        assertNotNull(dao.findUserByName("Test User"));
+        assertNotNull(dao.findUserByEmail("test@mail.com"));
     }
 
 }

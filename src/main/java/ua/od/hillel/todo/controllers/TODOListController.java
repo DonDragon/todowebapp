@@ -49,7 +49,7 @@ public class TODOListController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String name = user.getUsername();
 
-        ua.od.hillel.todo.entities.User entityUser = dao.findUserByName(name);
+        ua.od.hillel.todo.entities.User entityUser = dao.findUserByEmail(name);
         model.addAttribute("user", entityUser.getUsername());
 
         model.addAttribute("lists", dao.findTODOListsByUser(entityUser.getId()));
@@ -89,7 +89,7 @@ public class TODOListController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); //get logged in username
 
-        ua.od.hillel.todo.entities.User user = dao.findUserByName(name);
+        ua.od.hillel.todo.entities.User user = dao.findUserByEmail(name);
 
         if ( ! user.getTodoList().contains(list)) {
             return "redirect:/index";
@@ -156,7 +156,7 @@ public class TODOListController {
 
         User userData = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String name = userData.getUsername();
-        ua.od.hillel.todo.entities.User user = dao.findUserByName(name);
+        ua.od.hillel.todo.entities.User user = dao.findUserByEmail(name);
         todoList.setUser(user);
 
         dao.create(todoList);
@@ -197,7 +197,7 @@ public class TODOListController {
 
         User userData = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String name = userData.getUsername();
-        ua.od.hillel.todo.entities.User user = dao.findUserByName(name);
+        ua.od.hillel.todo.entities.User user = dao.findUserByEmail(name);
         todoList.setUser(user);
 
         dao.update(todoList);

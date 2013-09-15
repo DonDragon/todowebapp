@@ -87,9 +87,9 @@ public class TODODao {
                 "SELECT l FROM TODOEntry l WHERE l.list.id="+Long.toString(listId)+" ORDER BY l.isDone ASC").getResultList();
     }
 
-    public User findUserByName(String name) {
-        return (User) entityManager.createQuery( "SELECT l FROM users l WHERE l.username=:name")
-                .setParameter("name", name)
+    public User findUserByEmail(String email) {
+        return (User) entityManager.createQuery( "SELECT l FROM users l WHERE l.email=:email")
+                .setParameter("email", email)
                 .getSingleResult();
     }
 
