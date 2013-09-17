@@ -10,8 +10,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-@Entity(name="users")
-@Table(name="users")
+/**
+ * Registered User
+ */
+@Entity
+@Table(name="Users")
 public class User {
 
     @Id
@@ -40,7 +43,6 @@ public class User {
 
     @Column
     private Integer enabled;
-
 
     @OneToMany(mappedBy="user")
     private List<TODOList> todoList;

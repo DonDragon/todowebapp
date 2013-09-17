@@ -7,7 +7,9 @@ import ua.od.hillel.todo.dao.TODODao;
 import ua.od.hillel.todo.entities.User;
 import static org.junit.Assert.*;
 
-
+/**
+ * Basic User Test
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({
     "classpath:applicationContext.xml",
@@ -16,8 +18,11 @@ import static org.junit.Assert.*;
 })
 public class UserTest {
 
+    /**
+     * Dao
+     */
     @Autowired
-    TODODao dao;
+    private TODODao dao;
 
     @Test
     public void createUserTest() {
@@ -29,8 +34,10 @@ public class UserTest {
         user.setPassword("123456");
 
         dao.create(user);
+        User u = dao.findUserByEmail("test@mail.com");
 
-        assertNotNull(dao.findUserByEmail("test@mail.com"));
+        assertNotNull(u);
+        assertEquals((long)27, (long)u.getAge());
     }
 
 }

@@ -13,7 +13,7 @@ import ua.od.hillel.todo.entities.TODOList;
 import org.springframework.web.servlet.ModelAndView;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.userdetails.User;
-import javax.persistence.EntityManager;
+
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +23,12 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/")
-public class TODOListController {
+public class TodosController {
 
-
-    private static final Logger logger = Logger.getLogger(TODOListController.class);
+    /**
+     * Logger
+     */
+    private static final Logger logger = Logger.getLogger(TodosController.class);
 
     /**
      * Dao
@@ -34,31 +36,22 @@ public class TODOListController {
     @Autowired
     private TODODao dao;
 
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String root() {
-        return "redirect:/index";
-    }
     /**
      * List lists
      */
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(ModelMap model, Principal p) {
-        logger.debug(model);
-        logger.error(p.getName());
+
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String name = user.getUsername();
-
         ua.od.hillel.todo.entities.User entityUser = dao.findUserByEmail(name);
         model.addAttribute("user", entityUser.getUsername());
-
         model.addAttribute("lists", dao.findTODOListsByUser(entityUser.getId()));
-        model.addAttribute("allChecked", allListsChecked());
 		return "index";
 	}
 
     /**
-     * Delete
+     * Delete TODOList
      */
     @RequestMapping(value = "/lists/delete", method = RequestMethod.GET)
     public String delete() {
@@ -69,11 +62,13 @@ public class TODOListController {
         return "redirect:/";
     }
 
+    /**
+     * Delete TODOEntry
+     */
     @RequestMapping(value = "/entry/delete", method = RequestMethod.GET)
-    public String deleteEntry(@RequestParam("list_id") Long listId,
-                              @RequestParam("entry_id") Long entryId) {
+    public String deleteEntry(@RequestParam("list_id") Long listId, @RequestParam("entry_id") Long entryId) {
 
-        dao.deleteEntry(entryId);
+        dao.deleteById(TODOEntry.class, entryId);
 
         return "redirect:/lists/" + listId;
     }
@@ -88,11 +83,10 @@ public class TODOListController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); //get logged in username
-
         ua.od.hillel.todo.entities.User user = dao.findUserByEmail(name);
 
         if ( ! user.getTodoList().contains(list)) {
-            return "redirect:/index";
+            return "redirect:/";
         }
 
         model.addAttribute("list", list);
@@ -100,6 +94,9 @@ public class TODOListController {
         return "lists/show";
     }
 
+    /**
+     * Show list entries
+     */
     @RequestMapping(value = "/lists/{id}/{sort}", method = RequestMethod.GET)
     public String showSortedEntries(@PathVariable Long id, @PathVariable String sort, ModelMap model) {
         TODOList list = dao.load(TODOList.class, id);
@@ -130,6 +127,9 @@ public class TODOListController {
         return "lists/show";
     }
 
+    /**
+     * Toggle TODOEntry
+     */
     @RequestMapping(value = "/{entity}/{id}/toggle", method = RequestMethod.GET)
     public String toggleEntry( @PathVariable String entity, @PathVariable Long id) {
         if (entity.equals("entries")) {
@@ -150,7 +150,6 @@ public class TODOListController {
     /**
      * Create List
      */
-
     @RequestMapping(value = "/lists/addlist", method = RequestMethod.POST)
     public String addList(@ModelAttribute("list") TODOList todoList, BindingResult result) {
 
@@ -163,13 +162,17 @@ public class TODOListController {
         return "redirect:/";
     }
 
-
+    /**
+     * Create List Form
+     */
     @RequestMapping("/lists/create")
     public ModelAndView showForm() {
-
         return new ModelAndView("lists/input", "command", new TODOList());
     }
 
+    /**
+     * Create entry
+     */
     @RequestMapping(value="/entries/new", method = RequestMethod.POST)
     public String newEntry(@ModelAttribute("entry") TODOEntry entry) {
         dao.create(entry);
@@ -192,6 +195,9 @@ public class TODOListController {
         return new ModelAndView("lists/edit", "command", dao.load(TODOList.class, id));
     }
 
+    /**
+     * Edit List
+     */
     @RequestMapping(value = "/editList", method = RequestMethod.POST)
     public String editList(@ModelAttribute("EditList") TODOList todoList, ModelMap map) {
 
@@ -204,50 +210,5 @@ public class TODOListController {
         return "redirect:/";
     }
 
-    /**
-     * Toggle all lists
-     */
-    @RequestMapping(value = "/lists/selectall", method = RequestMethod.GET)
-    public String toggleAllLists() {
-        if (allListsChecked()) {
-            checkLists(false);
-        } else {
-            checkLists(true);
-        }
-       return "redirect:/";
-    }
-
-    private boolean allListsChecked() {
-        boolean checked = true;
-
-        if (dao.findTODOLists().size() < 1) {
-            return false;
-        }
-
-        for (TODOList list : dao.findTODOLists()) {
-            if (!list.getChecked()) {
-                checked = false;
-                break;
-            }
-        }
-        return checked;
-    }
-
-    private void checkLists(Boolean b) {
-        for (TODOList list : dao.findTODOLists()) {
-            list.setChecked(b);
-            dao.update(list);
-        }
-
-    }
-
-    /**
-     * Sort lists
-     */
-    @RequestMapping(value = "/lists/sort", method = RequestMethod.GET)
-    public String sort(@RequestParam("param") String sortBy,  ModelMap model) {
-        model.addAttribute("lists", dao.sortTODOLists(sortBy) );
-        return "index";
-    }
 
 }

@@ -3,14 +3,10 @@ package ua.od.hillel.todo.entities;
 import javax.persistence.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: altair
- * Date: 07.09.13
- * Time: 16:20
- * To change this template use File | Settings | File Templates.
+ * User Roles
  */
 @Entity
-@Table(name="userRoles")
+@Table(name="UserRoles")
 public class UserRoles {
 
     @Id

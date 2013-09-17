@@ -4,9 +4,12 @@ import javax.persistence.*;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * List of logical grouped entries
+ */
 @Entity
 @Table(name="TODOList")
-public class TODOList implements Comparable {
+public class TODOList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -81,15 +84,4 @@ public class TODOList implements Comparable {
         return getEntries().size();
     }
 
-    @Override
-    public int compareTo(Object obj) {
-
-        TODOList tmp = (TODOList) obj;
-
-        if (this.getEntriesCount() < tmp.getEntriesCount() )
-            return -1;
-        else if (this.getEntriesCount() > tmp.getEntriesCount())
-            return 1;
-        return 0;
-    }
 }

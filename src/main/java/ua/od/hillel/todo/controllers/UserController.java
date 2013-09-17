@@ -31,8 +31,8 @@ public class UserController {
     /**
      * Show Registration
      */
-    @RequestMapping(value="/register", method= RequestMethod.GET)
-    public String loadRegisterPage(Model m) {
+    @RequestMapping(value="/register", method=RequestMethod.GET)
+    public String showRegister(Model m) {
         m.addAttribute("User", new User());
         return "user/register";
     }
@@ -41,7 +41,7 @@ public class UserController {
      * Register / create new user
      */
     @RequestMapping(value="/register", method=RequestMethod.POST)
-    public String submitRegisterForm(@Valid @ModelAttribute("User") User user,
+    public String doRegister(@Valid @ModelAttribute("User") User user,
                                      BindingResult result, Model m) {
 
         if (result.hasErrors()) {
@@ -49,8 +49,8 @@ public class UserController {
             return "user/register";
         }
 
-        if (dao.isUsernameExists(user.getUsername())) {
-            m.addAttribute("errorMessage", "Username already exists");
+        if (dao.isEmailExists(user.getEmail())) {
+            m.addAttribute("errorMessage", "Email already exists");
             return "user/register";
         }
         user.setPassword(

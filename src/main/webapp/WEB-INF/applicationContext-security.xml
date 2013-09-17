@@ -17,7 +17,6 @@
 	</http>
 
 
-
 	<authentication-manager>
 		<authentication-provider>
             <password-encoder hash="md5"/>
@@ -30,7 +29,6 @@
 				authorities-by-username-query="
 					select u.email as username, ur.authority from users u, userRoles ur
 					where u.id = ur.user_id and u.email=?  "
-					
 			/>
 		</authentication-provider>
 	</authentication-manager>
