@@ -49,8 +49,8 @@ public class UserController {
             return "user/register";
         }
 
-        if (dao.isUsernameExists(user.getUsername())) {
-            m.addAttribute("errorMessage", "Username already exists");
+        if (dao.isEmailExists(user.getEmail())) {
+            m.addAttribute("errorMessage", "Email already exists");
             return "user/register";
         }
         user.setPassword(

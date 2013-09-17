@@ -100,11 +100,11 @@ public class TODODao {
                 .getResultList();
     }
 
-    public boolean isUsernameExists(String username) {
+    public boolean isEmailExists(String email) {
         List<User> users = entityManager.createQuery("SELECT l from users l").getResultList();
 
         for (User user : users) {
-            if (user.getUsername().equals(username)) {
+            if (user.getEmail().equals(email)) {
                 return true;
             }
         }
