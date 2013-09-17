@@ -50,7 +50,7 @@ public class TODODao {
     }
 
     public User findUserByEmail(String email) {
-        return (User) entityManager.createQuery( "SELECT l FROM users l WHERE l.email=:email")
+        return (User) entityManager.createQuery( "SELECT l FROM User l WHERE l.email=:email")
                 .setParameter("email", email)
                 .getSingleResult();
     }
@@ -63,7 +63,7 @@ public class TODODao {
     }
 
     public boolean isEmailExists(String email) {
-        List<User> users = entityManager.createQuery("SELECT l from users l").getResultList();
+        List<User> users = entityManager.createQuery("SELECT l from User l").getResultList();
 
         for (User user : users) {
             if (user.getEmail().equals(email)) {
