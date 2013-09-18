@@ -5,8 +5,7 @@
 
  <table>
     <tr>
-        <td><a href="/lists/create" class="btn btn-success">+ Add new TODO list</a></button></td>
-        <td><a href="/lists/delete" class="btn btn-danger"> Delete </a></button></td>
+        <td><a href="/lists/create" class="btn btn-success">+ Add new TODO list</a></td>
     </tr>
  </table>
 
@@ -15,19 +14,20 @@
   <table class="table table-hover">
 
   <tr class="danger">
-        <td align="center" width="5%" style="cursor:pointer" onclick="window.location='/lists/selectall'">
-            <input type="checkbox"
+        <td align="center" width="5%" style="cursor:pointer">
+            <input disabled type="checkbox"
                 <c:if test="${allChecked}"> checked </c:if>
             />
         </td>
-        <th style="cursor:pointer" onclick="window.location='/lists/sort?param=title'">Title</th>
-        <th style="cursor:pointer" onclick="window.location='/lists/sort?param=description'">Description</th>
-        <th style="cursor:pointer" onclick="window.location='/lists/sort?param=entry'">Entry</th>
+        <th style="cursor:pointer" onclick="window.location='/?sortby=title'">Title</th>
+        <th style="cursor:pointer" onclick="window.location='/?sortby=description'">Description</th>
+        <th style="cursor:pointer" onclick="window.location='/?sortby=items'">Entry</th>
+        <th style="cursor:pointer">Action</th>
   </tr>
   <c:forEach var="l" items="${lists}">
    <tr>
    <td align="center" width="5%">
-                 <input onclick="window.location='/lists/${l.id}/toggle'" type="checkbox" style="width:25px; height:25px"
+                 <input disabled type="checkbox" style="width:25px; height:25px"
                                           <c:if test="${l.checked}">
                                               checked
                                           </c:if>
@@ -42,8 +42,9 @@
     <td style="cursor:pointer; vertical-align:middle" onclick="window.location='/lists/${l.id}'" align="center" width="10%">
          ${fn:length(l.entries)}
     </td>
-    <td width="5%">
-         <a href="/edit/list/${l.id}" class="btn btn-warning"> edit </a>
+    <td width="15%">
+         <a href="/edit/list/${l.id}" class="btn btn-mini btn-warning">Edit</a>
+         <a href="/lists/delete/${l.id}" class="btn btn-mini btn-danger">Delete</a>
     </td>
    </tr>
    </c:forEach>

@@ -6,6 +6,13 @@
 <head>
           <link rel="stylesheet" href="http://bootswatch.com/united/bootstrap.min.css">
            <style>
+               .errorblock {
+                color: #ff0000;
+                background-color: #ffEEEE;
+                border: 3px solid #ff0000;
+                padding: 8px;
+                margin: 16px;
+               }
                 body { background-color: #eee; font: helvetica; }
                 #container { width: 500px; background-color: #fff; margin: 30px auto; padding: 30px; border-radius: 5px; box-shadow: 5px; }
                 .green { font-weight: bold; color: green; }
