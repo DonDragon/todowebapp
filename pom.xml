@@ -13,10 +13,32 @@
 		<junit.version>4.11</junit.version>
 		<jdk.version>1.6</jdk.version>
 		<jetty.version>8.1.8.v20121106</jetty.version>
+        <spring.test.version>3.2.4.RELEASE</spring.test.version>
 	</properties>
 
 	<dependencies>
 
+        <!-- Spring TEST -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.test.version}</version>
+        </dependency>
+
+
+        <!-- Validation START -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.0.1.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.1.0.Final</version>
+        </dependency>
+        <!-- Validation END -->
 
         <!-- Hibernate framework -->
         <dependency>
@@ -88,6 +110,12 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
             <version>${spring.version}</version>
         </dependency>
 
@@ -166,6 +194,12 @@
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.8</version>
         </dependency>
 
     </dependencies>

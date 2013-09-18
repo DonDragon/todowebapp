@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.view.InternalResourceView;
 
+/**
+ * Custom JstlView to render constant template of header and footer
+ */
 public class JstlView extends InternalResourceView {
 
     @Override
@@ -20,14 +23,13 @@ public class JstlView extends InternalResourceView {
         // set original view being asked for as a request parameter
         request.setAttribute("partial", dispatcherPath );
 
-    // force everything to be template.jsp
+        // force everything to be template.jsp
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/pages/_template.jsp");
         for (String n : model.keySet()) {
             request.setAttribute(n, model.get(n));
         }
 
         requestDispatcher.include(request, response);
-
     }
 
 }

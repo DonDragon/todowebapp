@@ -3,15 +3,13 @@
     <persistence-unit name="unit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
-         
         <properties>
-             <property name="hibernate.hbm2ddl.auto"
-                       value="create-drop"/>
+             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
         </properties>
 
-         <class>ua.od.hillel.todo.entities.TODOEntry</class>
-         <class>ua.od.hillel.todo.entities.TODOList</class>
-         <class>ua.od.hillel.todo.entities.User</class>
+        <class>ua.od.hillel.todo.entities.TODOEntry</class>
+        <class>ua.od.hillel.todo.entities.TODOList</class>
+        <class>ua.od.hillel.todo.entities.User</class>
         <class>ua.od.hillel.todo.entities.UserRoles</class>
 
     </persistence-unit>

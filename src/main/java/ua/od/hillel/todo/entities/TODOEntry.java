@@ -2,6 +2,9 @@ package ua.od.hillel.todo.entities;
 
 import javax.persistence.*;
 
+/**
+ * Entry
+ */
 @Entity
 @Table(name="TODOEntry")
 public class TODOEntry {

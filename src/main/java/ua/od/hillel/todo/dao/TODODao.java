@@ -1,7 +1,5 @@
 package ua.od.hillel.todo.dao;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ua.od.hillel.todo.entities.TODOEntry;
@@ -10,26 +8,27 @@ import ua.od.hillel.todo.entities.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Generic DAO
+ */
 @Repository
 @Transactional
 public class TODODao {
 
-    private String order = "DESC";
-
+    /**
+     * Entity Manager
+     */
     @PersistenceContext
     private EntityManager entityManager;
 
     public List<TODOList> findTODOLists() {
-        return entityManager.createQuery(
-                "SELECT l FROM TODOList l").getResultList();
+        return entityManager.createQuery("SELECT l FROM TODOList l").getResultList();
     }
 
-    public <T> T load(Class<T> clazz, Long id) {
+    public <T> T load(Class<T> clazz, Object id) {
        return entityManager.find(clazz, id);
     }
 
@@ -39,54 +38,20 @@ public class TODODao {
 
     public void create(Object o) {
         entityManager.persist(o);
+        entityManager.flush();
     }
 
-    public void delete(Long id) {
-        entityManager.remove( load(TODOList.class, id) );
+    public void delete(Object o) {
+        entityManager.remove(o);
     }
 
-    public void deleteEntry(Long id) {
-        entityManager.remove( load(TODOEntry.class, id) );
+    public void deleteById(Class clazz, Object id) {
+        entityManager.remove(load(clazz, id));
     }
 
-    public List<TODOList> sortTODOLists(String param) {
-
-        List<TODOList> resultList;
-
-        if (param.equals("entry")) {
-            resultList = entityManager.createQuery("SELECT l FROM TODOList l").getResultList();
-
-            if (order.equals("DESC")) {
-                order = "ASC";
-                Collections.sort(resultList);
-            }
-            else {
-                order = "DESC";
-                Collections.sort(resultList);
-                Collections.reverse(resultList);
-            }
-
-            return resultList;
-        }
-        else {
-            if (order.equals("DESC"))
-                order = "ASC";
-            else
-                order = "DESC";
-
-            return entityManager.createQuery(
-                    "SELECT l FROM TODOList l ORDER BY l." + param + " " +order).getResultList();
-        }
-    }
-
-    public List<TODOEntry> sortTODOEntry(Long listId) {
-        return entityManager.createQuery(
-                "SELECT l FROM TODOEntry l WHERE l.list.id="+Long.toString(listId)+" ORDER BY l.isDone ASC").getResultList();
-    }
-
-    public User findUserByName(String name) {
-        return (User) entityManager.createQuery( "SELECT l FROM users l WHERE l.username=:name")
-                .setParameter("name", name)
+    public User findUserByEmail(String email) {
+        return (User) entityManager.createQuery( "SELECT l FROM User l WHERE l.email=:email")
+                .setParameter("email", email)
                 .getSingleResult();
     }
 
@@ -97,7 +62,15 @@ public class TODODao {
                 .getResultList();
     }
 
-    public boolean searchUsername(Object o){
-        return entityManager.contains(o);
+
+    public boolean isEmailExists(String email) {
+        List<User> users = entityManager.createQuery("SELECT l from User l").getResultList();
+
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

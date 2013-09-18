@@ -1,22 +1,23 @@
 package ua.od.hillel.todo.controllers;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import sun.security.provider.MD5;
 import ua.od.hillel.todo.dao.TODODao;
 import ua.od.hillel.todo.entities.User;
 import ua.od.hillel.todo.entities.UserRoles;
 
+import javax.validation.Valid;
+
 /**
- * Created with IntelliJ IDEA.
- * User: altair
- * Date: 07.09.13
- * Time: 10:36
- * To change this template use File | Settings | File Templates.
+ * User Controller
  */
 @Controller
 public class UserController {
@@ -27,65 +28,64 @@ public class UserController {
     @Autowired
     private TODODao dao;
 
-    @RequestMapping(value="register", method= RequestMethod.GET)
-    public String loadRegisterPage(Model m) {
+    /**
+     * Show Registration
+     */
+    @RequestMapping(value="/register", method=RequestMethod.GET)
+    public String showRegister(Model m) {
         m.addAttribute("User", new User());
         return "user/register";
     }
 
-    @RequestMapping(value="register", method=RequestMethod.POST)
-    public String submitRegisterForm(@ModelAttribute("User") User user, Model m) {
 
-        /**
-         * Check register form
-         */
-        if(user.getUsername() == "" || user.getEmail() == "" || user.getPassword() == "" || user.getAge() == null){
-            m.addAttribute("message", "Please fill in all fields");
+    /**
+     * Register / create new user
+     */
+    @RequestMapping(value="/register", method=RequestMethod.POST)
+    public String doRegister(@Valid @ModelAttribute("User") User user,
+                                     BindingResult result, Model m) {
+
+        if (result.hasErrors()) {
+            m.addAttribute("hasError", true);
             return "user/register";
         }
 
-        try{
-            dao.create(user);
-        }catch(Exception ex){
-            if(!dao.searchUsername(user)){
-                m.addAttribute("message", "This username already used");
-                return "user/register";
-            }
+        if (dao.isEmailExists(user.getEmail())) {
+            m.addAttribute("errorMessage", "Email already exists");
+            return "user/register";
         }
-
-
-
+        user.setPassword(
+           DigestUtils.md5Hex( user.getPassword() )
+        );
         user.setEnabled(1);
 
-        User newUser = dao.findUserByName(user.getUsername());
+        dao.create(user);
+
+
         UserRoles userRoles = new UserRoles();
-        userRoles.setUser_id(newUser.getId());
+        userRoles.setUser_id(user.getId());
         userRoles.setAuthority("ROLE_USER");
         dao.create(userRoles);
 
         m.addAttribute("message", "Successfully saved person: " + user.toString());
-        return "user/register";
+        return "user/register_success";
     }
 
+    /**
+     * Show login
+     */
     @RequestMapping(value="/login", method = RequestMethod.GET)
     public String login(ModelMap model) {
-
         return "user/login";
-
     }
 
+    /**
+     * Login failed
+     */
     @RequestMapping(value="/loginfailed", method = RequestMethod.GET)
     public String loginerror(ModelMap model) {
-
         model.addAttribute("error", "true");
         return "user/login";
-
     }
 
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public String logout(ModelMap model) {
-
-        return "user/login";
-
-    }
 }

@@ -1,7 +1,7 @@
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
  <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-		<h1>Your TODO lists</h1>
+<h1>Your TODO lists</h1>
 
  <table>
     <tr>
@@ -24,7 +24,7 @@
         <th style="cursor:pointer" onclick="window.location='/lists/sort?param=description'">Description</th>
         <th style="cursor:pointer" onclick="window.location='/lists/sort?param=entry'">Entry</th>
   </tr>
-  <c:forEach var="l" items="${lists}">+
+  <c:forEach var="l" items="${lists}">
    <tr>
    <td align="center" width="5%">
                  <input onclick="window.location='/lists/${l.id}/toggle'" type="checkbox" style="width:25px; height:25px"
