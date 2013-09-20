@@ -81,7 +81,11 @@ public class TODOList {
     }
 
     public Integer getEntriesCount() {
-        return getEntries().size();
+        if (getEntries() != null) {
+            return getEntries().size();
+        } else {
+            return 0;
+        }
     }
 
 }
