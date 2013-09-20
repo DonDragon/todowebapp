@@ -37,6 +37,7 @@ public class UserController {
         return "user/register";
     }
 
+
     /**
      * Register / create new user
      */
@@ -59,6 +60,7 @@ public class UserController {
         user.setEnabled(1);
 
         dao.create(user);
+
 
         UserRoles userRoles = new UserRoles();
         userRoles.setUser_id(user.getId());

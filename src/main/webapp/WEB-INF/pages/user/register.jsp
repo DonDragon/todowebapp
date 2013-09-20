@@ -9,6 +9,7 @@
 
     <form:form modelAttribute="User" method="POST" action="register">
 
+
      <label for="emailInput">Email </label>
      <br/>
      <font color='red'><form:errors path="email"/> </font>

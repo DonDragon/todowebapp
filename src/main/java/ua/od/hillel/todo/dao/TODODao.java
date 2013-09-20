@@ -62,6 +62,7 @@ public class TODODao {
                 .getResultList();
     }
 
+
     public boolean isEmailExists(String email) {
         List<User> users = entityManager.createQuery("SELECT l from User l").getResultList();
 
