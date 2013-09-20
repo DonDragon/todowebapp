@@ -14,6 +14,7 @@
         		method='POST'>
 
         		<label for="userNameInput">Username </label>
+        		<label for="userNameInput">(e-mail) </label>
         		<input autofocus id="userNameInput" class="form-control" type='text' name='j_username' value=''>
 
         		<label for="userPasswordInput">Password </label>
